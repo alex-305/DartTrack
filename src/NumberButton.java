@@ -15,14 +15,12 @@ public class NumberButton extends JButton implements ActionListener {
     int value;
     static boolean pressed;
 
-    NumberButton() {
+    NumberButton(int valueOfNumber) {
         pressed = false;
         setFont(new Font("Calibri", Font.BOLD, 100));
         setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
-    }
-    NumberButton(int valueOfNumber) {
-
+        setText(String.valueOf(valueOfNumber));
     }
 
 
