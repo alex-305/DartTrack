@@ -15,7 +15,7 @@ public class Player {
     public boolean hasWon() { return win; }
     //Setters
     public void setPicked(boolean hasPicked) { numPicked = hasPicked; }
-    public boolean setScore(int score ) {
+    private boolean setScore(int score ) {
         boolean goodScore = true;
         if (score == 0) {
             win = true;

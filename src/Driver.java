@@ -1,9 +1,13 @@
+import javax.swing.SwingUtilities;
+
 public class Driver {
 
-    static Player playerOne, playerTwo;
     public static void main(String[] args) {
-        DartWindow window = new DartWindow(playerOne, playerTwo);
-        window.start();
-    }
+        SwingUtilities.invokeLater(() -> {
+            DartWindow dartWindow = new DartWindow();
+            dartWindow.start();
+            dartWindow.play();
 
+        });
+    }
 }
