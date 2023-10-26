@@ -1,6 +1,7 @@
 //Java Swing imports
 import javax.swing.JButton;
 
+import java.awt.Dimension;
 //Formatting imports
 import java.awt.Font;
 
@@ -11,14 +12,14 @@ import java.awt.event.ActionEvent;
 public class NumberButton extends JButton implements ActionListener {
     
     //Data
-    Boolean pressed;
     int value;
+    static boolean pressed;
 
     NumberButton() {
         pressed = false;
         setFont(new Font("Calibri", Font.BOLD, 100));
         setFocusPainted(false);
-
+        setPreferredSize(new Dimension(100, 100));
     }
     NumberButton(int valueOfNumber) {
 
@@ -26,7 +27,9 @@ public class NumberButton extends JButton implements ActionListener {
 
 
     public void actionPerformed(ActionEvent e) {
-        
+        if(!pressed) {
+
+        }        
         
     }
 }
