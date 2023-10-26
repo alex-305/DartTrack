@@ -1,8 +1,9 @@
 public class Driver {
 
+    static Player playerOne, playerTwo;
     public static void main() {
-        DartTrack dt = new DartTrack();
-        DartWindow window = new DartWindow();
+        DartWindow window = new DartWindow(playerOne, playerTwo);
+        window.start();
     }
 
 }

@@ -13,7 +13,6 @@ public class Player {
     //Getters
     public int getScore() { return score; }
     public boolean hasWon() { return win; }
-    public boolean hasPicked() { return numPicked; }
     //Setters
     public void setPicked(boolean hasPicked) { numPicked = hasPicked; }
     public boolean setScore(int score ) {

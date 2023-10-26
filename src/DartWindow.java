@@ -1,46 +1,33 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JButton;
 
 import java.awt.GridBagLayout;
 import java.awt.Font;
 
 public class DartWindow extends JFrame {
-    private JButton [] buttons;
+    private NumberButton [] numberButtons;
     private JPanel numOptions;
+    
     public DartWindow(Player p1, Player p2) {
         setSize(1000,1000);
     }
     
     public void start() {
         //Buttons
-        buttons = new JButton[25];
+        numberButtons = new NumberButton[25];
         numOptions.setLayout(new GridBagLayout());
-        //Number picked
-        boolean numPicked = false;
-
-        for (int i = 0, multi = 0; i < 25; i++) {
-                buttons[i].setFont(new Font("Calibri", Font.BOLD, 100));
-                buttons[i].setFocusPainted(false);
+        for (int i = 0, multi = 0; i < 21; i++) {
             if (i < 20) { //Numbers
-                buttons[i] = new JButton(String.valueOf(i));
-                buttons[i].addActionListener((e) -> {
-                    JButton numButton = (JButton) e.getSource();
-                    for (int j = 20; j < 23; j++) {
-                        buttons[i];
-                    }
+                numberButtons[i] = new NumberButton(i);
+                numberButtons[i].addActionListener((e) -> {
+
                 });
-            } else if (i < 23) {
-                multi++;
-                buttons[i] = new JButton(String.valueOf(i)+'x');
-            } else if (i == 23) {
-                buttons[i] = new JButton(String.valueOf(i));
             } else {
-                buttons[i] = new JButton("Enter");
+                numberButtons[20] = new NumberButton(25);
             }
 
-            numOptions.add(buttons[i]);
+            numOptions.add(numberButtons[i]);
         }
 
     }
