@@ -14,37 +14,36 @@ public class NumberButton extends JButton implements ActionListener {
     
     //Data
     int value;
-    private DartWindow dartWindow;
-    static boolean pressed;
-    static boolean pOneTurn;
-    static int dartCount;
-
+    private static DartWindow dartWindow;
+    
     //Setter
-    void resetPressed() { pressed = false; }
+    void setValue(int valueOfButton) { value = valueOfButton; }
+    public static void initializeWindow(DartWindow dw) { dartWindow = dw; }
+
 
     NumberButton(int valueOfNumber, DartWindow dartWindow) {
-        dartCount = 0;
-        pressed = false;
-        pOneTurn = true;
-        this.dartWindow = dartWindow;
+        addActionListener(this);
         setFont(new Font("Calibri", Font.BOLD, 100));
         setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
+        value = valueOfNumber;
         setText(String.valueOf(valueOfNumber));
     }
 
+    //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(!pressed) {
+        System.out.printf("Listened\n");
+        if(!(dartWindow.dartTrack.isNumPicked())) {
+            System.out.printf("True\n");
             setBackground(new Color(246, 185, 59));
-            pressed = true;
-            dartCount++;
-            if (pOneTurn) {
-                dartWindow.PlayerOne.addPoints(Integer.parseInt(this.getText()));
+            dartWindow.dartTrack.flipNumPicked();
+            if (dartWindow.dartTrack.isP1Turn()) {
+                dartWindow.dartTrack.PlayerOne.addPoints(value);
             } else {
-                dartWindow.PlayerTwo.addPoints(Integer.parseInt(this.getText()));
+                dartWindow.dartTrack.PlayerTwo.addPoints(value);
             }
-            pOneTurn = !pOneTurn;
+            dartWindow.dartTrack.nextTurn();
         }        
         
     }
