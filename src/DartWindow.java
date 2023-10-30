@@ -117,6 +117,13 @@ public class DartWindow extends JFrame {
         //Setting up play button
         playButton = new JButton("Play");
         playButton.setFont(new Font("Calibri", Font.BOLD, 50));
+        playButton.addActionListener(e -> {
+            if (CheckinButton.getSelectionValue() != 0 && CheckoutButton.getSelectionValue() != 0) {
+                dartTrack.setMode(CheckinButton.getSelectionValue(), CheckoutButton.getSelectionValue());
+                getContentPane().removeAll();
+                start();
+            }
+        });
         //Adding to play Panel
         playPanel.add(playButton);
         playPanel.setPreferredSize(new Dimension(1920,100));
@@ -130,7 +137,8 @@ public class DartWindow extends JFrame {
 
     public void start() {
         //Resetting the frame
-        resetWindow();
+        revalidate();
+        repaint();
         //Score Panels
         scorePanel = new JPanel();
         titlePanel = new JPanel();
@@ -185,16 +193,8 @@ public class DartWindow extends JFrame {
         //Adding panels to main panel
         mainPanel.add(numPanel);
         mainPanel.add(scorePanel, BorderLayout.EAST);
-        add(mainPanel);
 
         setVisible(true);
-    }
-
-    //Reset JFrame
-
-    private void resetWindow() {
-        getContentPane().removeAll();
-        mainPanel.removeAll();
     }
 
     //Update score

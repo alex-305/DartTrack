@@ -2,7 +2,12 @@ public class DartTrack {
     //Singleton
     private static DartTrack dartTrack;
 
-    static DartTrack getInstance() {
+    public void setMode(int checkinMode, int checkoutMode) {
+        this.checkinMode = checkinMode;
+        this.checkoutMode = checkoutMode;
+    }
+
+    public static DartTrack getInstance() {
         if (dartTrack == null) {
             dartTrack = new DartTrack(2, 501);
         }
@@ -18,6 +23,10 @@ public class DartTrack {
     private int turnCount;  
     private int valueToMult;
     private boolean badScore;
+
+    //GameMode
+    private int checkinMode;
+    private int checkoutMode;
 
     //Getters
     public int getValueToMult() { return valueToMult; }

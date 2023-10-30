@@ -11,12 +11,15 @@ class CheckoutButton extends JButton implements ActionListener {
     private static int selectionValue = 0; //value that user has selected
     private int value;
 
+    //Get Selection value
+    public static int getSelectionValue() {return selectionValue; }
     //Static setters
-    void setSelectionValue(int value) { selectionValue = value; }
+    private static void setSelectionValue(int value) { selectionValue = value; }
 
     CheckoutButton(int value) {
         addActionListener(this);
         this.value = value;
+        setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
         setFont(new Font("Calibri", Font.BOLD, 35));
         setBackground(dartWindow.getWhite());
@@ -37,5 +40,6 @@ class CheckoutButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         dartWindow.resetcheckoutColors();
         setBackground(dartWindow.getGreen());
+        setSelectionValue(value);
     }
 }
