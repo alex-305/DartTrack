@@ -1,15 +1,11 @@
 //Java Swing
-import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
 //Formatting
 import java.awt.GridLayout;
-import java.awt.GridBagLayout;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Color;
