@@ -32,9 +32,12 @@ public class NumberButton extends JButton implements ActionListener {
     //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        dartWindow.resetNumColors();
-        setBackground(new Color(68, 189, 50));
-        dartTrack.flipNumPicked();
-        dartTrack.setValueToMult(value);
+        if (dartTrack.getWinner() == 0) {
+            dartWindow.validInput();
+            dartWindow.resetNumColors();
+            setBackground(new Color(68, 189, 50));
+            dartTrack.flipNumPicked();
+            dartTrack.setValueToMult(value);
+        }
     }
 }

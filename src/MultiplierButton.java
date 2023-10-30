@@ -33,15 +33,18 @@ public class MultiplierButton extends JButton implements ActionListener {
     //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean win = false;
+        boolean validInput = false;
         if(dartTrack.getNumPicked()) {
             valueToMult = dartTrack.getValueToMult();
-            win = dartTrack.addPoints(valueToMult * multValue);
+            validInput = dartTrack.addPoints(valueToMult * multValue);
+            if(!validInput) {
+                dartWindow.invalidInput();
+            }
             dartTrack.flipNumPicked();
             dartWindow.updatePlayScore("Player " + (dartTrack.getTurn()+1) + ": " + dartTrack.getPlayerScore(dartTrack.getTurn()));
             dartWindow.resetNumColors();
         }
-        if(win) {
+        if(dartTrack.getWinner() != 0) {
             dartWindow.updatePlayScore("Player " + (dartTrack.getWinner()+1) + " wins!");
         }
     }

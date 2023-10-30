@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 
 public class DartWindow extends JFrame {
@@ -18,7 +17,7 @@ public class DartWindow extends JFrame {
     //Colors
     final private Color dartWhite;
     final private Color dartBlack;
-    final private Color dartGreen;
+    final private Color dartRed;
     //DartTrack
     public static DartTrack dartTrack;
     //Buttons
@@ -51,12 +50,19 @@ public class DartWindow extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
         setSize(1920,1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //Colors
         dartWhite = new Color(236, 240, 241);
         dartBlack = new Color(45, 52, 54);
-        dartGreen = new Color(68, 189, 50);
+        dartRed = new Color(255, 56, 56);
     }
     
+    public void mainMenu() {
+        
+    }
+
     public void start() {
+        //Resetting the frame
+        resetWindow();
         //Score Panels
         scorePanel = new JPanel();
         titlePanel = new JPanel();
@@ -113,11 +119,27 @@ public class DartWindow extends JFrame {
         setVisible(true);
     }
 
+    //Reset JFrame
+
+    private void resetWindow() {
+        getContentPane().removeAll();
+        mainPanel.removeAll();
+    }
+
+    //Multiplier Button functions
     public void updatePlayScore(String txt) {playerScoreLabels[dartTrack.getTurn()].setText(txt); }
 
     public void resetNumColors() {
         for (int i = 0; i < 22; i++) {
             numberButtons[i].setBackground(dartWhite);
         }
+    }
+
+    public void invalidInput() {
+        playerScoreLabels[dartTrack.getTurn()].setForeground(dartRed);
+    }
+
+    public void validInput() {
+        playerScoreLabels[dartTrack.getTurn()].setForeground(dartWhite);        
     }
 }

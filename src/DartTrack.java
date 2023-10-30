@@ -34,35 +34,36 @@ public class DartTrack {
     public void setValueToMult(int valueToMult) { this.valueToMult = valueToMult; }
     public void flipNumPicked() { numPicked = !numPicked; }
     //Set score and error check
-    private boolean setScore(int score) {
-        boolean win = false;
+    private boolean setScore1In1Out(int score) {
+        boolean validScore = true;
         if (playerScores[turnCount] - score == 0) {
-            win = true;
             winner = turnCount;
             playerScores[turnCount] -= score;
         } else if(playerScores[turnCount] - score > 0 && playerScores[turnCount] - score != 1) {
             playerScores[turnCount] -= score;
+            dartCount++;
+        } else {
+            validScore = false;
         }
-        dartCount++;
-        return win;
+        return validScore;
     }
 
     public boolean addPoints(int points) {
-        boolean valid = false;
+        boolean valid = true;
         if(dartCount == 3) {
             nextTurn();
         }
         try {
             if (points > 60 || points < 0) {
+                valid = false;
                 throw new ImpossibleScoreException(points);
             }
-            valid = setScore(points);
+            valid = setScore1In1Out(points);
         } catch (ImpossibleScoreException ise) {
             System.out.printf(ise.getMessage());
         }
         return valid;
     }
-
     
     //Private constructor
     private DartTrack(int playerCount) {
@@ -74,6 +75,7 @@ public class DartTrack {
         }
         numPicked = false;
         turnCount = 0;
-        dartCount = 0;        
+        dartCount = 0;  
+        winner = 0;      
     }
 }
