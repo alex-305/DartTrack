@@ -3,7 +3,6 @@ import javax.swing.JButton;
 //Formatting imports
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Color;
 
 //Action Listener imports
 import java.awt.event.ActionListener;
@@ -20,8 +19,8 @@ public class NumberButton extends JButton implements ActionListener {
     
     NumberButton(int valueOfNumber) {
         addActionListener(this);
-        setForeground(new Color(45, 52, 54));
-        setBackground(new Color(236, 240, 241));
+        setForeground(dartWindow.getBlack());
+        setBackground(dartWindow.getWhite());
         setFont(new Font("Calibri", Font.BOLD, 100));
         setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
@@ -33,9 +32,8 @@ public class NumberButton extends JButton implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (dartTrack.getWinner() == 0) {
-            dartWindow.validInput();
             dartWindow.resetNumColors();
-            setBackground(new Color(68, 189, 50));
+            setBackground(dartWindow.getGreen());
             dartTrack.flipNumPicked();
             dartTrack.setValueToMult(value);
         }

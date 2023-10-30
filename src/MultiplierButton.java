@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 //Formatting
 import java.awt.Font;
 import java.awt.Dimension;
-import java.awt.Color;
 
 public class MultiplierButton extends JButton implements ActionListener {
     //Data
@@ -17,15 +16,13 @@ public class MultiplierButton extends JButton implements ActionListener {
 
     //Setter
     void setNum(int value) { valueToMult = value; }
-    //Getter
-
     //Constructor
     MultiplierButton(int valueOfNumber) {
         multValue = valueOfNumber;
         addActionListener(this);
         setFont(new Font("Calibri", Font.BOLD, 100));
         setFocusPainted(false);
-        setBackground(new Color(246, 185, 59));
+        setBackground(dartWindow.getGold());
         setPreferredSize(new Dimension(100, 100));
         setText(String.valueOf(valueOfNumber) + 'x');
     }
@@ -33,16 +30,13 @@ public class MultiplierButton extends JButton implements ActionListener {
     //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean validInput = false;
         if(dartTrack.getNumPicked()) {
             valueToMult = dartTrack.getValueToMult();
-            validInput = dartTrack.addPoints(valueToMult * multValue);
-            if(!validInput) {
-                dartWindow.invalidInput();
-            }
+            dartTrack.addPoints(valueToMult * multValue);
             dartTrack.flipNumPicked();
             dartWindow.updatePlayScore("Player " + (dartTrack.getTurn()+1) + ": " + dartTrack.getPlayerScore(dartTrack.getTurn()));
             dartWindow.resetNumColors();
+            dartWindow.updateActivePlayer();
         }
         if(dartTrack.getWinner() != 0) {
             dartWindow.updatePlayScore("Player " + (dartTrack.getWinner()+1) + " wins!");
