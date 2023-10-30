@@ -39,7 +39,7 @@ public class DartTrack {
     public boolean getBadScore() { return badScore; }
     
     //next turn
-    private void nextTurn() { turnCount = turnCount == playerCount - 1 ? 0 : turnCount+1; dartCount = 0; }
+    public void nextTurn() { turnCount = turnCount == playerCount - 1 ? 0 : turnCount+1; dartCount = 0; }
 
     //Setters
     public void setValueToMult(int valueToMult) { this.valueToMult = valueToMult; }
@@ -49,8 +49,8 @@ public class DartTrack {
         if (playerScores[turnCount] - score == 0) {
             winner = turnCount;
             badScore = false;
-            playerScores[turnCount] -= score;
-        } else if(playerScores[turnCount] - score > 0 && playerScores[turnCount] - score != 1) {
+            playerScores[turnCount] = 0;
+        } else if(playerScores[turnCount] - score > 0) {
             playerScores[turnCount] -= score;
             badScore = false;
             dartCount++;
@@ -66,14 +66,41 @@ public class DartTrack {
                 badScore = true;
                 throw new ImpossibleScoreException(points);
             }
-            setScore1In1Out(points);
+            switch(checkinMode) {
+                case 1:
+                    switch(checkoutMode) {
+                        case 1:
+                            setScore1In1Out(points);
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch(checkoutMode) {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch(checkoutMode) {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                    }
+                    break;
+            }
         } catch (ImpossibleScoreException ise) {
             System.out.printf(ise.getMessage());
-        }
-        finally {
-            if(dartCount == 3) {
-                nextTurn();
-            }
         }
     }
     
