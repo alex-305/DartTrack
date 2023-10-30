@@ -31,7 +31,7 @@ public class NumberButton extends JButton implements ActionListener {
     //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (dartTrack.getWinner() == 0) {
+        if (dartTrack.getWinner() == -1) {
             dartWindow.resetNumColors();
             setBackground(dartWindow.getGreen());
             dartTrack.flipNumPicked();

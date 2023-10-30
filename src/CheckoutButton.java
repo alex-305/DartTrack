@@ -26,7 +26,7 @@ class CheckoutButton extends JButton implements ActionListener {
         setForeground(dartWindow.getBlack());
         switch(value) {
             case 1:
-                setText("Single-out");
+                setText("Open-out");
                 break;
             case 2:
                 setText("Double-out");

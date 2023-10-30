@@ -47,7 +47,7 @@ public class DartWindow extends JFrame {
     //Main Menu
     //Panels
     private JPanel checkinPanel;
-    private JPanel spacingPanel;
+    private JPanel startScorePanel;
     private JPanel checkoutPanel;
     private JPanel playPanel;
 
@@ -87,10 +87,10 @@ public class DartWindow extends JFrame {
         //Setting up panels
         checkinPanel = new JPanel(new GridLayout(4,1));
         checkoutPanel = new JPanel(new GridLayout(4,1));
-        spacingPanel = new JPanel();
+        startScorePanel = new JPanel();
         playPanel = new JPanel();
         //Spacing Panel
-        spacingPanel.setPreferredSize(new Dimension(1720,980));
+        startScorePanel.setPreferredSize(new Dimension(1720,980));
         //Check-in Check-out Labels
         JLabel checkInLabel = new JLabel("Check in");
         JLabel checkOutLabel = new JLabel("Check out");
@@ -125,7 +125,7 @@ public class DartWindow extends JFrame {
         playPanel.setPreferredSize(new Dimension(1920,100));
         //Adding all panels to main panel
         mainPanel.add(checkinPanel, BorderLayout.WEST);
-        mainPanel.add(spacingPanel, BorderLayout.CENTER);
+        mainPanel.add(startScorePanel, BorderLayout.CENTER);
         mainPanel.add(checkoutPanel, BorderLayout.EAST);
         mainPanel.add(playPanel, BorderLayout.SOUTH);
         setVisible(true);
@@ -196,6 +196,13 @@ public class DartWindow extends JFrame {
     //Update score
     public void updatePlayScore(String txt) {playerScoreLabels[dartTrack.getTurn()].setText(txt); }
 
+    //Show all scores
+    public void showPlayerScores() {
+        for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
+            playerScoreLabels[i].setText("Player " + (i+1) + ": " + dartTrack.getPlayerScore(i));
+        }
+    }
+
     //Active player indicator
     public void updateActivePlayer() {
         if (dartTrack.getBadScore()) {
@@ -207,6 +214,9 @@ public class DartWindow extends JFrame {
             if (i != dartTrack.getTurn()) {
                 playerScoreLabels[i].setForeground(dartWhite);
             }
+        }
+        if(dartTrack.getWinner() == -1) {
+            updatePlayScore("Player " + (dartTrack.getTurn()+1) + ": " + dartTrack.getPlayerScore(dartTrack.getTurn()));
         }
     }
 

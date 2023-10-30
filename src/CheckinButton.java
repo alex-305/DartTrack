@@ -28,7 +28,7 @@ class CheckinButton extends JButton implements ActionListener{
         setForeground(dartWindow.getBlack());
         switch(value) {
             case 1:
-                setText("Single-in");
+                setText("Open-in");
                 break;
             case 2:
                 setText("Double-in");
