@@ -8,15 +8,19 @@ import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 
 public class DartWindow extends JFrame {
+    //Buttons clicked
+    boolean numPicked, multPicked;
     //Colors
     final private Color dartWhite;
     final private Color dartBlack;
     final private Color dartGreen;
-    public DartTrack dartTrack;
+    //DartTrack
+    public static DartTrack dartTrack;
     //Buttons
     private NumberButton [] numberButtons;
     private MultiplierButton [] multButtons;
@@ -24,13 +28,26 @@ public class DartWindow extends JFrame {
     private JPanel mainPanel;
     private JPanel numPanel;
     private JPanel scorePanel;
-    private JPanel p1ScorePanel;
-    private JPanel p2ScorePanel;
+    private JPanel playerScorePanel;
     private JPanel titlePanel;
+    //Player Score Labels
+    private JLabel [] playerScoreLabels;
 
+    //Singleton
+    private static DartWindow dartWindow;
 
-    public DartWindow() {
-        dartTrack = new DartTrack();
+    public static DartWindow getInstance() {
+        if(dartWindow == null) {
+            dartWindow = new DartWindow();
+        }
+        return dartWindow;
+    }
+
+    //Private constructor
+    private DartWindow() {
+        numPicked = false;
+        multPicked = false;
+        dartTrack = DartTrack.getInstance();
         mainPanel = new JPanel(new BorderLayout());
         setSize(1920,1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -43,16 +60,32 @@ public class DartWindow extends JFrame {
         //Score Panels
         scorePanel = new JPanel();
         titlePanel = new JPanel();
-        p1ScorePanel = new JPanel();
-        p2ScorePanel = new JPanel();
-        //Sizing
+        playerScorePanel = new JPanel();
+        //Score Panel
         scorePanel.setSize(400,1080);
+        scorePanel.setLayout(new GridLayout(dartTrack.getPlayerCount(),1));
         //Score Labels
         JLabel titleLabel = new JLabel("<html><center>Scores</center></html>");
+        titleLabel.setForeground(dartWhite);
         titleLabel.setFont(new Font("Calibri", Font.BOLD, 200));
         //Adding labels to panels
+        titlePanel.setSize(new Dimension(400,230));
         titlePanel.add(titleLabel);
+        titlePanel.setBackground(dartBlack);
         scorePanel.add(titlePanel);
+        //Player score panels
+        playerScorePanel.setLayout(new GridLayout(dartTrack.getPlayerCount(),1));
+        //Player score labels
+        playerScoreLabels = new JLabel[dartTrack.getPlayerCount()];
+        for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
+            playerScoreLabels[i] = new JLabel("Player " + (i+1) + ": 501");
+            playerScoreLabels[i].setFont(new Font("Calibri", Font.BOLD, 50));
+            playerScoreLabels[i].setForeground(dartWhite);
+            playerScorePanel.add(playerScoreLabels[i]);
+        }
+        playerScorePanel.setBackground(dartBlack);
+        //Adding player score panel
+        scorePanel.add(playerScorePanel);
         //Number Buttons
         numberButtons = new NumberButton[22];
         //Initialzing and setting layout for numPanel
@@ -60,30 +93,16 @@ public class DartWindow extends JFrame {
         numPanel.setSize(1000,1000);
         for (int i = 0; i < 21; i++) {
             //Making all buttons equal a number and adding them to panel
-            numberButtons[i] = new NumberButton(i, this);
-            switch(i) {
-                case 1: case 4: case 5:
-                case 6: case 9: case 11:
-                case 15: case 17:
-                case 16: case 19:
-                    numberButtons[i].setForeground(dartBlack);
-                    numberButtons[i].setBackground(dartWhite);
-                    break;
-                default:
-                    numberButtons[i].setForeground(dartWhite);
-                    numberButtons[i].setBackground(dartBlack);
-            }
+            numberButtons[i] = new NumberButton(i);
             numPanel.add(numberButtons[i]);
         }
         //Special case of 25 being initialized then added
-        numberButtons[21] = new NumberButton(25, this);
-        numberButtons[21].setForeground(dartBlack);
-        numberButtons[21].setBackground(dartGreen);        
+        numberButtons[21] = new NumberButton(25);
         numPanel.add(numberButtons[21]);
         //Multipler Buttons
         multButtons = new MultiplierButton[3];
         for (int i = 0; i < 3; i++) {
-            multButtons[i] = new MultiplierButton(i+1, this);
+            multButtons[i] = new MultiplierButton(i+1);
             numPanel.add(multButtons[i]);
         }
         //Adding panels to main panel
@@ -94,8 +113,11 @@ public class DartWindow extends JFrame {
         setVisible(true);
     }
 
-    public void play() {
+    public void updatePlayScore(String txt) {playerScoreLabels[dartTrack.getTurn()].setText(txt); }
 
+    public void resetNumColors() {
+        for (int i = 0; i < 22; i++) {
+            numberButtons[i].setBackground(dartWhite);
+        }
     }
-
 }

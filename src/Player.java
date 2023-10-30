@@ -1,33 +1,26 @@
 public class Player {
 
+    static DartTrack dartTrack;
     private int score;
-    private boolean win;
-    private boolean numPicked;
     
     //Constructor
     Player() {
+        dartTrack = DartTrack.getInstance();
         score = 501;
-        win = false;
     }
 
     //Getters
     public int getScore() { return score; }
-    public boolean hasWon() { return win; }
-    //Setters
-    public void setPicked(boolean hasPicked) { numPicked = hasPicked; }
     private boolean setScore(int score ) {
-        boolean goodScore = true;
+        boolean win = false;
         if (score == 0) {
             win = true;
             this.score = score;
         } else if(score > 0 && score != 1) {
             this.score = score;
-        } else {
-            goodScore = false;
         }
-        return goodScore;
+            return win;
     }
-    public void win(boolean winStatus) { win = winStatus; }
 
     public boolean addPoints(int points) {
         boolean valid = false;

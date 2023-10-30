@@ -1,6 +1,5 @@
 //Java Swing imports
 import javax.swing.JButton;
-import javax.swing.JFrame;
 //Formatting imports
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,15 +13,15 @@ public class NumberButton extends JButton implements ActionListener {
     
     //Data
     int value;
-    private static DartWindow dartWindow;
-    
+    private static DartTrack dartTrack = DartTrack.getInstance();
+    private static DartWindow dartWindow = DartWindow.getInstance();
     //Setter
     void setValue(int valueOfButton) { value = valueOfButton; }
-    public static void initializeWindow(DartWindow dw) { dartWindow = dw; }
-
-
-    NumberButton(int valueOfNumber, DartWindow dartWindow) {
+    
+    NumberButton(int valueOfNumber) {
         addActionListener(this);
+        setForeground(new Color(45, 52, 54));
+        setBackground(new Color(236, 240, 241));
         setFont(new Font("Calibri", Font.BOLD, 100));
         setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
@@ -33,23 +32,9 @@ public class NumberButton extends JButton implements ActionListener {
     //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.printf("Listened\n");
-        if(!(dartWindow.dartTrack.isNumPicked())) {
-            System.out.printf("True\n");
-            setBackground(new Color(246, 185, 59));
-            dartWindow.dartTrack.flipNumPicked();
-            if (dartWindow.dartTrack.isP1Turn()) {
-                dartWindow.dartTrack.PlayerOne.addPoints(value);
-            } else {
-                dartWindow.dartTrack.PlayerTwo.addPoints(value);
-            }
-            dartWindow.dartTrack.nextTurn();
-        }        
-        
+        dartWindow.resetNumColors();
+        setBackground(new Color(68, 189, 50));
+        dartTrack.flipNumPicked();
+        dartTrack.setValueToMult(value);
     }
-
-    public void passPlayerScore(Player player, int value) {
-        player.addPoints(value);        
-    }
-
 }
