@@ -58,11 +58,12 @@ public class DartTrack {
             playerScores[turn] -= (score*mult);
             dartCount++;
         } else {
-            dartCount = -1; //dartcount = -1 is a bust
+            dartCount = -1; //bust
         }
     }
     //Single in Double Out
     private void setScoreOpenIn2Out(int score, int mult) {
+        badScore = false;
         if (mult == 2 && score != 25 && playerScores[turn] - (score * mult) == 0) {//win
             winner = turn;
             playerScores[turn] = 0;
@@ -75,6 +76,7 @@ public class DartTrack {
     }
     //Double in Double Out
     private void setScore2In2Out(int score, int mult) {
+        badScore = false;
         if(playerScores[turn] == startScore) {
             if (mult == 2 && score != 25) {
                 playerScores[turn] -= (score*mult);
@@ -92,10 +94,27 @@ public class DartTrack {
             dartCount = -1; //bust
         }
     }
+    
+    private void setScore2InOpenOut(int score, int mult) {
+        badScore = false;
+        if (playerScores[turn] == startScore) {
+            if (mult == 2 && score != 25) {
+                playerScores[turn] -= (score*mult);
+                dartCount++;
+            } else {
+                dartCount = -1;
+            } 
+        } else if(playerScores[turn] - (score*mult) > 0) {
+            playerScores[turn] -= (score*mult);
+            dartCount++;
+        } else {
+            dartCount = -1; //bust
+        }
+    }
 
     public void addPoints(int points, int mult) {
         try {
-            if (points > 60 || points < 0) {
+            if (points*mult > 60 || points*mult < 0) {
                 badScore = true;
                 throw new ImpossibleScoreException(points);
             }
@@ -115,6 +134,7 @@ public class DartTrack {
                 case 2:
                     switch(checkoutMode) {
                         case 1:
+                            setScore2InOpenOut(points, mult);
                             break;
                         case 2:
                             setScore2In2Out(points, mult);
