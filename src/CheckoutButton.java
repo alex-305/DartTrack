@@ -20,26 +20,23 @@ class CheckoutButton extends JButton implements ActionListener {
         addActionListener(this);
         this.value = value;
         setFocusPainted(false);
-        setPreferredSize(new Dimension(100, 100));
-        setFont(new Font("Calibri", Font.BOLD, 35));
+        setPreferredSize(new Dimension(300, 300));
+        setFont(new Font("Calibri", Font.BOLD, 65));
         setBackground(dartWindow.getWhite());
         setForeground(dartWindow.getBlack());
         switch(value) {
             case 1:
-                setText("Open-out");
+                setText("Open");
                 break;
             case 2:
-                setText("Double-out");
-                break;
-            case 3:
-                setText("Triple-out");
+                setText("Double");
                 break;
         }
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         dartWindow.resetcheckoutColors();
-        setBackground(dartWindow.getGreen());
+        setBackground(dartWindow.getLightGreen());
         setSelectionValue(value);
     }
 }

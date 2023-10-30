@@ -1,14 +1,6 @@
 public class DartTrack {
     //Singleton
     private static DartTrack dartTrack;
-
-    public void setMode(int checkinMode, int checkoutMode) {
-        this.checkinMode = checkinMode;
-        this.checkoutMode = checkoutMode;
-    }
-
-    public void setStartScore(int score) { startScore = score; }
-
     public static DartTrack getInstance() {
         if (dartTrack == null) {
             dartTrack = new DartTrack(2, 501);
@@ -46,7 +38,20 @@ public class DartTrack {
 
     //Setters
     public void setValueToMult(int valueToMult) { this.valueToMult = valueToMult; }
-    public void flipNumPicked() { numPicked = !numPicked; }
+    public void setNumPicked(boolean numPicked) { this.numPicked = numPicked; }
+    public void setMode(int checkinMode, int checkoutMode) {
+        this.checkinMode = checkinMode;
+        this.checkoutMode = checkoutMode;
+    }
+    public void setStartScore(int score) { startScore = score; }
+    public void setPlayerCount(int playerCount) { 
+        this.playerCount = playerCount; 
+        playerScores = new int [playerCount];
+        for (int i = 0; i < playerCount; i++) {
+            playerScores[i] = startScore;
+        }
+
+    }
 
     //Single in Single out
     private void setScoreOpenInOpenOut(int score, int mult) {
@@ -164,10 +169,6 @@ public class DartTrack {
         //Setting up player scores
         this.playerCount = playerCount;
         this.startScore = startScore;
-        playerScores = new int [playerCount];
-        for (int i = 0; i < playerCount; i++) {
-            playerScores[i] = startScore;
-        }
         numPicked = false;
         badScore = false;
         turn = 0;

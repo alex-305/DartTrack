@@ -23,18 +23,15 @@ class CheckinButton extends JButton implements ActionListener{
         this.value = value;
         setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
-        setFont(new Font("Calibri", Font.BOLD, 35));
+        setFont(new Font("Calibri", Font.BOLD, 65));
         setBackground(dartWindow.getWhite());
         setForeground(dartWindow.getBlack());
         switch(value) {
             case 1:
-                setText("Open-in");
+                setText("Open");
                 break;
             case 2:
-                setText("Double-in");
-                break;
-            case 3:
-                setText("Triple-in");
+                setText("Double");
                 break;
         }
 
@@ -42,7 +39,7 @@ class CheckinButton extends JButton implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         dartWindow.resetcheckinColors();
-        setBackground(dartWindow.getGreen());
+        setBackground(dartWindow.getLightGreen());
         setSelectionValue(value);
     }
 }
