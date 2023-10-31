@@ -1,14 +1,12 @@
 //Java Swing
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 
 //Formatting
 import java.awt.GridLayout;
@@ -55,6 +53,11 @@ public class DartWindow extends JFrame {
     private JPanel [] playerPanels;
     //Player Score Labels
     private JLabel [] playerScoreLabels;
+    //Scrollable Log
+    private JLabel logTitle;
+    private JScrollPane logScroll;
+    private JTextField logText;
+
 
     //Singleton
     private static DartWindow dartWindow;
@@ -108,6 +111,11 @@ public class DartWindow extends JFrame {
         checkoutPanel = new JPanel(new GridLayout(3,1));
         middlePanel = new JPanel();
         playPanel = new JPanel();
+        //Setting background colors
+        //middlePanel.setBackground(dartWhite);
+        playPanel.setBackground(dartWhite);
+        checkoutPanel.setBackground(dartWhite);
+        checkinPanel.setBackground(dartWhite);
         //Label for Score and Player Count
         JLabel scoreLabel = new JLabel("<html><center>Starting<br>Score</center></html>");
         scoreLabel.setFont(new Font("Calibri", Font.BOLD, 50));
@@ -118,6 +126,8 @@ public class DartWindow extends JFrame {
         //Setting Score and Player Count Panel
         JPanel scorePanel = new JPanel(new GridLayout(2,1));
         JPanel playCountPanel = new JPanel(new GridLayout(2,1));
+        scorePanel.setBackground(dartWhite);
+        playCountPanel.setBackground(dartWhite);
         //Adding panels
         scorePanel.add(scoreLabel);
         playCountPanel.add(playerCountLabel);
@@ -132,10 +142,10 @@ public class DartWindow extends JFrame {
         playCountSpinner.setPreferredSize(new Dimension(300,300));
         //Score Spinner Formatting
         (((JSpinner.DefaultEditor) scoreSpinner.getEditor()).getTextField()).setFont(new Font("Calibri", Font.BOLD, 130));
+        scoreSpinner.setBackground(darkDartWhite);
         //Player Count Spinner Formatting
         (((JSpinner.DefaultEditor) playCountSpinner.getEditor()).getTextField()).setFont(new Font("Calibri", Font.BOLD, 120));
-        //((BasicArrowButton) playCountSpinner.getEditor().getComponent(1)).setPreferredSize(new Dimension(50,100)); //Increment
-        //((BasicArrowButton) playCountSpinner.getEditor().getComponent(0)).setPreferredSize(new Dimension(50,100)); //Decrement        
+        playCountSpinner.setBackground(darkDartWhite);
         //Adding to panels
         scorePanel.add(scoreSpinner);
         playCountPanel.add(playCountSpinner);
@@ -162,11 +172,13 @@ public class DartWindow extends JFrame {
         for (int i = 0; i < checkinCount; i++) {
             checkinButtons[i] = new CheckinButton(i+1);
             checkinButtons[i].setPreferredSize(new Dimension(100,100));
+            checkinButtons[i].setBackground(darkDartWhite);
             checkinPanel.add(checkinButtons[i]);
         }
         for (int i = 0; i < checkoutCount; i++) {
             checkoutButtons[i] = new CheckoutButton(i+1);
             checkoutButtons[i].setPreferredSize(new Dimension(100,100));
+            checkoutButtons[i].setBackground(darkDartWhite);
             checkoutPanel.add(checkoutButtons[i]);
         }
         //Setting up play button
@@ -299,13 +311,13 @@ public class DartWindow extends JFrame {
 
     public void resetcheckinColors() {
         for (int i = 0; i < 2; i++) {
-            checkinButtons[i].setBackground(dartWhite);
+            checkinButtons[i].setBackground(darkDartWhite);
         }
     }
 
     public void resetcheckoutColors() {
         for (int i = 0; i < 2; i++) {
-            checkoutButtons[i].setBackground(dartWhite);
+            checkoutButtons[i].setBackground(darkDartWhite);
         }
     }
 }
