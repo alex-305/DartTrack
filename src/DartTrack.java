@@ -121,7 +121,7 @@ public class DartTrack {
         try {
             if (points*mult > 60 || points*mult < 0) {
                 badScore = true;
-                throw new ImpossibleScoreException(points);
+                throw new ImpossibleScoreException(points,mult);
             }
             switch(checkinMode) {
                 case 1:
