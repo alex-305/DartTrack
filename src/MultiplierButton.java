@@ -39,6 +39,9 @@ public class MultiplierButton extends JButton implements ActionListener {
             dartWindow.updateActivePlayer();
             dartTrack.setNumPicked(false);
             dartWindow.resetNumColors();
+            if(valueToMult == 25 && multValue != 3) {
+                dartWindow.enable3x();
+            }
         }
         if(dartTrack.getWinner() != -1) {
             dartWindow.showPlayerScores();

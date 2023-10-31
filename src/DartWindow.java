@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -54,9 +54,11 @@ public class DartWindow extends JFrame {
     //Player Score Labels
     private JLabel [] playerScoreLabels;
     //Scrollable Log
+    private JPanel logTitlePanel;
+    private JPanel logPanel;
     private JLabel logTitle;
     private JScrollPane logScroll;
-    private JTextField logText;
+    private JTextArea logText;
 
     //Singleton
     private static DartWindow dartWindow;
@@ -254,7 +256,7 @@ public class DartWindow extends JFrame {
         playerPanels = new JPanel[dartTrack.getPlayerCount()];
         //Player score setup
         playerScoreLabels = new JLabel[dartTrack.getPlayerCount()];
-        int playerPanelSize = 0;
+        int playerPanelSize = 5;//Used to make playerScorePanel resizable according to # of players
         for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
             playerPanelSize += 75;
             //Labels
@@ -268,20 +270,34 @@ public class DartWindow extends JFrame {
             playerPanels[i].setBackground(dartWhite);
             playerScorePanel.add(playerPanels[i]);
         }
-        playerScorePanel.setPreferredSize(new Dimension(500,playerPanelSize+5));
+        playerScorePanel.setPreferredSize(new Dimension(500,playerPanelSize));
         playerScorePanel.setBackground(dartBlack);
 
         //Adding player score panel
         scorePanel.add(playerScorePanel);
+        //Creating scroll panels
+        logPanel = new JPanel();
+        logTitlePanel = new JPanel();
+        logTitlePanel.setPreferredSize(new Dimension(500,40));
+        logTitlePanel.setBackground(dartWhite);
+        logPanel.setBackground(dartBlack);
+        logPanel.setForeground(dartWhite);
         //Creating Scrollable log
         logTitle = new JLabel("Log");
         logTitle.setFont(new Font("Calibri", Font.BOLD, 30));
         logScroll = new JScrollPane();
-        logText = new JTextField();
+        logScroll.setBackground(dartBlack);
+        logScroll.setForeground(dartWhite);
+        logText = new JTextArea(20,20);
+        logText.setBackground(dartBlack);
+        logText.setForeground(dartWhite);
+        logText.setText("Game commenced.");
         //Adding text area to scroll pane
         logScroll.add(logText);
+        logTitlePanel.add(logTitle);
+        logPanel.add(logScroll);
         //Adding to scorePanel
-        scorePanel.add(logTitle);
+        scorePanel.add(logTitlePanel);
         scorePanel.add(logScroll);
         //Number Buttons
         numberButtons = new NumberButton[22];
@@ -338,6 +354,9 @@ public class DartWindow extends JFrame {
         }
     }
 
+    public void disable3x() { multButtons[2].setBackground(lightDartRed);}
+    public void enable3x() {multButtons[2].setBackground(dartGold);}
+
     public void resetNumColors() {
         for (int i = 0; i < 22; i++) {
             numberButtons[i].setBackground(dartWhite);
@@ -355,13 +374,16 @@ public class DartWindow extends JFrame {
             checkoutButtons[i].setBackground(darkDartWhite);
         }
     }
-
+    //Check in Check-out change color of play button
     public void playButtonGreen() {
         if (checkInClicked && checkOutClicked) {
             playButton.setBackground(lightDartGreen);
         }
     }
-
     public void setCheckInTrue() { checkInClicked = true; }
     public void setCheckOutTrue() { checkOutClicked = true; }
+
+    public void addLogText(String txt) {
+        logText.append(txt + '\n');
+    }
 }

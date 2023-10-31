@@ -31,6 +31,11 @@ public class NumberButton extends JButton implements ActionListener {
     //Action Listener
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(value == 25) {
+            dartWindow.disable3x();
+        } else {
+            dartWindow.enable3x();
+        }
         if (dartTrack.getWinner() == -1) {
             dartWindow.resetNumColors();
             setBackground(dartWindow.getLightGreen());
