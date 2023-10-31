@@ -58,7 +58,6 @@ public class DartWindow extends JFrame {
     private JScrollPane logScroll;
     private JTextField logText;
 
-
     //Singleton
     private static DartWindow dartWindow;
 
@@ -250,13 +249,15 @@ public class DartWindow extends JFrame {
         titlePanel.setBackground(dartWhite);
         scorePanel.add(titlePanel);
         //Player score panels
-        playerScorePanel.setLayout(new FlowLayout());
-        playerScorePanel.setPreferredSize(new Dimension(500,850));
+        playerScorePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100,5));
         //Player Panels
         playerPanels = new JPanel[dartTrack.getPlayerCount()];
         //Player score setup
         playerScoreLabels = new JLabel[dartTrack.getPlayerCount()];
+        int playerPanelSize = 0;
         for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
+            playerPanelSize += 75;
+            //Labels
             playerScoreLabels[i] = new JLabel("Player " + (i+1) + ": " + dartTrack.getPlayerScore(i));
             playerScoreLabels[i].setFont(new Font("Calibri", Font.BOLD, 50));
             playerScoreLabels[i].setForeground(dartBlack);
@@ -267,11 +268,21 @@ public class DartWindow extends JFrame {
             playerPanels[i].setBackground(dartWhite);
             playerScorePanel.add(playerPanels[i]);
         }
+        playerScorePanel.setPreferredSize(new Dimension(500,playerPanelSize+5));
         playerScorePanel.setBackground(dartBlack);
-
 
         //Adding player score panel
         scorePanel.add(playerScorePanel);
+        //Creating Scrollable log
+        logTitle = new JLabel("Log");
+        logTitle.setFont(new Font("Calibri", Font.BOLD, 30));
+        logScroll = new JScrollPane();
+        logText = new JTextField();
+        //Adding text area to scroll pane
+        logScroll.add(logText);
+        //Adding to scorePanel
+        scorePanel.add(logTitle);
+        scorePanel.add(logScroll);
         //Number Buttons
         numberButtons = new NumberButton[22];
         //Initialzing and setting layout for numPanel
