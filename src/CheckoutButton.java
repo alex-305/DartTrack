@@ -38,5 +38,7 @@ class CheckoutButton extends JButton implements ActionListener {
         dartWindow.resetcheckoutColors();
         setBackground(dartWindow.getLightGreen());
         setSelectionValue(value);
+        dartWindow.setCheckOutTrue();
+        dartWindow.playButtonGreen();
     }
 }

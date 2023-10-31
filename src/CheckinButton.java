@@ -41,5 +41,7 @@ class CheckinButton extends JButton implements ActionListener{
         dartWindow.resetcheckinColors();
         setBackground(dartWindow.getLightGreen());
         setSelectionValue(value);
+        dartWindow.setCheckInTrue();
+        dartWindow.playButtonGreen();
     }
 }
