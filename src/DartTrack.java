@@ -32,6 +32,8 @@ public class DartTrack {
     public int getPlayerCount() { return playerCount; }
     public int getWinner() { return winner; }
     public boolean getBadScore() { return badScore; }
+    public int getCheckin() { return checkinMode; }
+    public int getCheckout() { return checkoutMode; }
     
     //next turn
     public void nextTurn() { turn = turn == playerCount - 1 ? 0 : turn+1; dartCount = 0; }
@@ -132,8 +134,6 @@ public class DartTrack {
                         case 2:
                             setScoreOpenIn2Out(points, mult);
                             break;
-                        case 3:
-                            break;
                     }
                     break;
                 case 2:
@@ -143,18 +143,6 @@ public class DartTrack {
                             break;
                         case 2:
                             setScore2In2Out(points, mult);
-                            break;
-                        case 3:
-                            break;
-                    }
-                    break;
-                case 3:
-                    switch(checkoutMode) {
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
                             break;
                     }
                     break;

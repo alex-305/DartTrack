@@ -55,8 +55,8 @@ public class DartWindow extends JFrame {
     private JLabel [] playerScoreLabels;
     //Scrollable Log
     private JPanel logTitlePanel;
-    private JPanel logPanel;
-    private JLabel logTitle;
+    private JPanel logScrollPanel;
+    private JLabel modeLabel;
     private JScrollPane logScroll;
     private JTextArea logText;
 
@@ -276,29 +276,44 @@ public class DartWindow extends JFrame {
         //Adding player score panel
         scorePanel.add(playerScorePanel);
         //Creating scroll panels
-        logPanel = new JPanel();
+        logScrollPanel = new JPanel();
         logTitlePanel = new JPanel();
         logTitlePanel.setPreferredSize(new Dimension(500,40));
         logTitlePanel.setBackground(dartWhite);
-        logPanel.setBackground(dartBlack);
-        logPanel.setForeground(dartWhite);
-        //Creating Scrollable log
-        logTitle = new JLabel("Log");
-        logTitle.setFont(new Font("Calibri", Font.BOLD, 30));
-        logScroll = new JScrollPane();
-        logScroll.setBackground(dartBlack);
-        logScroll.setForeground(dartWhite);
+        logScrollPanel.setBackground(dartBlack);
+        logScrollPanel.setForeground(dartWhite);
+        //Log/Gamemode Title Bar
+        modeLabel = new JLabel("Game Log");
+        if(dartTrack.getCheckin()==1 && dartTrack.getCheckout()==1) {
+            modeLabel.setText("Open-in | Open-out");
+        } else if(dartTrack.getCheckin()==1 && dartTrack.getCheckout()==2) {
+            modeLabel.setText("Open-in | Double-out");
+        } else if(dartTrack.getCheckin()==2 && dartTrack.getCheckout()==1) {
+            modeLabel.setText("Double-in | Open-out");
+        } else {
+            modeLabel.setText("Double-in | Double-out");
+        }
+
+        modeLabel.setFont(new Font("Calibri", Font.BOLD, 30));
+        //Log Text Area
         logText = new JTextArea(20,20);
         logText.setBackground(dartBlack);
         logText.setForeground(dartWhite);
         logText.setText("Game commenced.");
+        logText.setFont(new Font("Calibri", Font.BOLD, 10));
+        logText.setPreferredSize(new Dimension(480,1080-playerPanelSize-40));
+        //Log scrollpane
+        logScroll = new JScrollPane(logText);
+        //logScroll.setBackground(dartBlack);
+        //logScroll.setForeground(dartWhite);
         //Adding text area to scroll pane
         logScroll.add(logText);
-        logTitlePanel.add(logTitle);
-        logPanel.add(logScroll);
+        logTitlePanel.add(modeLabel);
+        logScrollPanel.add(logScroll);
+        logScrollPanel.setPreferredSize(new Dimension(500,1080-playerPanelSize-40));
         //Adding to scorePanel
         scorePanel.add(logTitlePanel);
-        scorePanel.add(logScroll);
+        scorePanel.add(logScrollPanel);
         //Number Buttons
         numberButtons = new NumberButton[22];
         //Initialzing and setting layout for numPanel
@@ -323,6 +338,7 @@ public class DartWindow extends JFrame {
         //Adding panels to main panel
         mainPanel.add(numPanel);
         mainPanel.add(scorePanel, BorderLayout.EAST);
+        mainPanel.setBackground(dartBlack);
 
         setVisible(true);
     }
@@ -354,6 +370,7 @@ public class DartWindow extends JFrame {
         }
     }
 
+    //Change color of 3x
     public void disable3x() { multButtons[2].setBackground(lightDartRed);}
     public void enable3x() {multButtons[2].setBackground(dartGold);}
 
