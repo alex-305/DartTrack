@@ -120,35 +120,27 @@ public class DartTrack {
     }
 
     public void addPoints(int points, int mult) {
-        try {
-            if (points*mult > 60 || points*mult < 0) {
+        if (points*mult > 60 || points*mult < 0) {
                 badScore = true;
-                throw new ImpossibleScoreException(points,mult);
-            }
+        } else {
             switch(checkinMode) {
                 case 1:
                     switch(checkoutMode) {
-                        case 1:
-                            setScoreOpenInOpenOut(points, mult);
+                        case 1: setScoreOpenInOpenOut(points, mult);
                             break;
-                        case 2:
-                            setScoreOpenIn2Out(points, mult);
+                        case 2: setScoreOpenIn2Out(points, mult);
                             break;
                     }
                     break;
                 case 2:
                     switch(checkoutMode) {
-                        case 1:
-                            setScore2InOpenOut(points, mult);
+                        case 1: setScore2InOpenOut(points, mult);
                             break;
-                        case 2:
-                            setScore2In2Out(points, mult);
+                        case 2: setScore2In2Out(points, mult);
                             break;
                     }
                     break;
             }
-        } catch (ImpossibleScoreException ise) {
-            System.out.printf(ise.getMessage());
         }
     }
     
@@ -157,7 +149,7 @@ public class DartTrack {
         //Setting up player scores
         this.playerCount = playerCount;
         this.startScore = startScore;
-        numPicked = false;
+        valueToMult = -1;
         badScore = false;
         turn = 0;
         dartCount = 0;  

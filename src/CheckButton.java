@@ -7,19 +7,23 @@ import java.awt.event.ActionListener;
 //JButton import
 import javax.swing.JButton;
 
-class CheckinButton extends JButton implements ActionListener{
+class CheckButton extends JButton implements ActionListener{
 
     private static DartWindow dartWindow = DartWindow.getInstance();
-
-    private static int selectionValue = 0; //value that user has selected
+    private boolean isIn;
+    private static int inValue = -1; //check-in Value
+    private static int outValue = -1; //check-out Value
     private int value;
     //Get Selection value
-    public static int getSelectionValue() {return selectionValue; }
+    public static int getCheckin() { return inValue; }
+    public static int getCheckout() { return outValue; }
     //Static setters
-    private static void setSelectionValue(int value) { selectionValue = value; }
+    private static void setCheckIn(int value) { inValue = value; }
+    private static void setCheckOut(int value) { outValue = value; }
 
-    CheckinButton(int value) {
+    CheckButton(int value, boolean isCheckIn) {
         addActionListener(this);
+        isIn = isCheckIn;
         this.value = value;
         setFocusPainted(false);
         setPreferredSize(new Dimension(100, 100));
@@ -38,10 +42,15 @@ class CheckinButton extends JButton implements ActionListener{
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        dartWindow.resetcheckinColors();
+        if(isIn) {
+            dartWindow.resetcheckinColors();
+            setCheckIn(value);
+            dartWindow.setCheckInTrue();
+        } else {
+            dartWindow.resetcheckoutColors();
+            setCheckOut(value);
+            dartWindow.setCheckOutTrue();
+        }
         setBackground(dartWindow.getLightGreen());
-        setSelectionValue(value);
-        dartWindow.setCheckInTrue();
-        dartWindow.playButtonGreen();
     }
 }

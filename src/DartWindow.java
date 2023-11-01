@@ -5,7 +5,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.JLabel;
 import javax.swing.JButton;
 
 //Formatting
@@ -52,11 +51,11 @@ public class DartWindow extends JFrame {
     //Player Score Panels
     private JPanel [] playerPanels;
     //Player Score Labels
-    private JLabel [] playerScoreLabels;
+    private DartLabel [] playerScoreLabels;
     //Scrollable Log
     private JPanel logTitlePanel;
     private JPanel logScrollPanel;
-    private JLabel modeLabel;
+    private DartLabel modeLabel;
     private JScrollPane logScroll;
     private JTextArea logText;
 
@@ -76,8 +75,8 @@ public class DartWindow extends JFrame {
     private Boolean checkInClicked;
     private Boolean checkOutClicked;
     //Check-in Check-out Buttons
-    CheckinButton [] checkinButtons;
-    CheckoutButton [] checkoutButtons;
+    CheckButton [] checkinButtons;
+    CheckButton [] checkoutButtons;
 
     public static DartWindow getInstance() {
         if(dartWindow == null) {
@@ -123,29 +122,21 @@ public class DartWindow extends JFrame {
         checkoutPanel.setBackground(dartWhite);
         checkinPanel.setBackground(dartWhite);
         //Setting up title bar
-        JLabel tLabel = new JLabel("DartTrack");
-        tLabel.setFont(new Font("Calibri", Font.BOLD, 80));
-        tLabel.setHorizontalAlignment(JLabel.CENTER);
-        tLabel.setForeground(dartBlack);
-        tLabel.setBackground(darkDartWhite);
+        DartLabel tLabel = new DartLabel("DartTrack", 80, dartBlack);
         titleBarPanel.add(tLabel);
         titleBarPanel.setBackground(dartWhite);
         //Label for Score and Player Count
-        JLabel scoreLabel = new JLabel("<html><center>Starting<br>Score</center></html>");
-        scoreLabel.setFont(new Font("Calibri", Font.BOLD, 50));
-        scoreLabel.setHorizontalAlignment(JLabel.CENTER);
-        JLabel playerCountLabel = new JLabel("<html><center>Player<br>Count</center></html>");
-        playerCountLabel.setFont(new Font("Calibri", Font.BOLD, 50));
-        playerCountLabel.setHorizontalAlignment(JLabel.CENTER);
+        DartLabel scoreLabel = new DartLabel("<html><center>Starting<br>Score</center></html>", 50, dartBlack);
+        DartLabel playerCountLabel = new DartLabel("<html><center>Player<br>Count</center></html>", 50, dartBlack);
         //Setting Score and Player Count Panel
         JPanel scorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
         JPanel playCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
         scorePanel.setBackground(dartWhite);
         playCountPanel.setBackground(dartWhite);
         //Adding panels
-        JLabel spacingLabel[] = new JLabel[4];
+        DartLabel spacingLabel[] = new DartLabel[4];
         for (int i = 0; i < 4; i++) {
-            spacingLabel[i] = new JLabel();
+            spacingLabel[i] = new DartLabel();
             spacingLabel[i].setPreferredSize(new Dimension(100,60));
         }
         scorePanel.add(spacingLabel[0]);
@@ -176,30 +167,26 @@ public class DartWindow extends JFrame {
         middlePanel.add(scorePanel);
         middlePanel.add(playCountPanel);
         //Check-in Check-out Labels
-        JLabel checkInLabel = new JLabel("<html><center>Check<br>In<center></html>");
-        JLabel checkOutLabel = new JLabel("<html><center>Check<br>Out<center></html>");
-        checkInLabel.setFont(new Font("Calibri", Font.BOLD, 50));
+        DartLabel checkInLabel = new DartLabel("<html><center>Check<br>In<center></html>", 50, dartBlack);
+        DartLabel checkOutLabel = new DartLabel("<html><center>Check<br>Out<center></html>", 50, dartBlack);
         checkInLabel.setPreferredSize(new Dimension(300,60));
-        checkInLabel.setHorizontalAlignment(JLabel.CENTER);
-        checkOutLabel.setFont(new Font("Calibri", Font.BOLD, 50));
         checkOutLabel.setPreferredSize(new Dimension(300,60));
-        checkOutLabel.setHorizontalAlignment(JLabel.CENTER);
         checkinPanel.add(checkInLabel);
         checkinPanel.setPreferredSize(new Dimension(300,260));
         checkoutPanel.add(checkOutLabel);
         checkoutPanel.setPreferredSize(new Dimension(300,260));
         //Setting up check-in check-out radio buttons
-        checkinButtons = new CheckinButton[checkinCount];
-        checkoutButtons = new CheckoutButton[checkoutCount];
+        checkinButtons = new CheckButton[checkinCount];
+        checkoutButtons = new CheckButton[checkoutCount];
         //Adding all the button groups and panels
         for (int i = 0; i < checkinCount; i++) {
-            checkinButtons[i] = new CheckinButton(i+1);
+            checkinButtons[i] = new CheckButton(i+1, true);
             checkinButtons[i].setPreferredSize(new Dimension(100,100));
             checkinButtons[i].setBackground(darkDartWhite);
             checkinPanel.add(checkinButtons[i]);
         }
         for (int i = 0; i < checkoutCount; i++) {
-            checkoutButtons[i] = new CheckoutButton(i+1);
+            checkoutButtons[i] = new CheckButton(i+1, false);
             checkoutButtons[i].setPreferredSize(new Dimension(100,100));
             checkoutButtons[i].setBackground(darkDartWhite);
             checkoutPanel.add(checkoutButtons[i]);
@@ -209,8 +196,8 @@ public class DartWindow extends JFrame {
         playButton.setFont(new Font("Calibri", Font.BOLD, 50));
         playButton.setBackground(lightDartRed);
         playButton.addActionListener(e -> { //Action listener for play button
-            if (CheckinButton.getSelectionValue() != 0 && CheckoutButton.getSelectionValue() != 0) {
-                dartTrack.setMode(CheckinButton.getSelectionValue(), CheckoutButton.getSelectionValue());
+            if (CheckButton.getCheckin() != 0 && CheckButton.getCheckout() != 0) {
+                dartTrack.setMode(CheckButton.getCheckin(), CheckButton.getCheckout());
                 dartTrack.setStartScore((Integer)scoreSpinner.getValue());
                 dartTrack.setPlayerCount((Integer)playCountSpinner.getValue());
                 getContentPane().removeAll();
@@ -242,9 +229,7 @@ public class DartWindow extends JFrame {
         scorePanel.setBackground(dartWhite);
         scorePanel.setLayout(new FlowLayout());
         //Score Labels
-        JLabel titleLabel = new JLabel("<html><center>Scores</center></html>");
-        titleLabel.setForeground(dartBlack);
-        titleLabel.setFont(new Font("Calibri", Font.BOLD, 100));
+        DartLabel titleLabel = new DartLabel("<html><center>Scores</center></html>",100,dartBlack);
         //Adding labels to panels
         titlePanel.setPreferredSize(new Dimension(500,100));
         titlePanel.add(titleLabel);
@@ -255,14 +240,12 @@ public class DartWindow extends JFrame {
         //Player Panels
         playerPanels = new JPanel[dartTrack.getPlayerCount()];
         //Player score setup
-        playerScoreLabels = new JLabel[dartTrack.getPlayerCount()];
+        playerScoreLabels = new DartLabel[dartTrack.getPlayerCount()];
         int playerPanelSize = 5;//Used to make playerScorePanel resizable according to # of players
         for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
             playerPanelSize += 75;
             //Labels
-            playerScoreLabels[i] = new JLabel("Player " + (i+1) + ": " + dartTrack.getPlayerScore(i));
-            playerScoreLabels[i].setFont(new Font("Calibri", Font.BOLD, 50));
-            playerScoreLabels[i].setForeground(dartBlack);
+            playerScoreLabels[i] = new DartLabel("Player " + (i+1) + ": " + dartTrack.getPlayerScore(i),50, dartBlack);
             //Panels
             playerPanels[i] = new JPanel();
             playerPanels[i].add(playerScoreLabels[i]);
@@ -283,7 +266,7 @@ public class DartWindow extends JFrame {
         logScrollPanel.setBackground(dartBlack);
         logScrollPanel.setForeground(dartWhite);
         //Log/Gamemode Title Bar
-        modeLabel = new JLabel("Game Log");
+        modeLabel = new DartLabel("Game Log",30,dartBlack);
         if(dartTrack.getCheckin()==1 && dartTrack.getCheckout()==1) {
             modeLabel.setText("Open-in | Open-out");
         } else if(dartTrack.getCheckin()==1 && dartTrack.getCheckout()==2) {
@@ -293,12 +276,12 @@ public class DartWindow extends JFrame {
         } else {
             modeLabel.setText("Double-in | Double-out");
         }
-
-        modeLabel.setFont(new Font("Calibri", Font.BOLD, 30));
         //Log Text Area
         logText = new JTextArea(20,20);
-        logText.setBackground(dartBlack);
-        logText.setForeground(dartWhite);
+        logText.setWrapStyleWord(true);
+        logText.setLineWrap(true);
+        //logText.setBackground(dartBlack);
+        //logText.setForeground(dartWhite);
         logText.setText("Game commenced.");
         logText.setFont(new Font("Calibri", Font.BOLD, 10));
         logText.setPreferredSize(new Dimension(480,1080-playerPanelSize-40));
@@ -392,15 +375,15 @@ public class DartWindow extends JFrame {
         }
     }
     //Check in Check-out change color of play button
-    public void playButtonGreen() {
-        if (checkInClicked && checkOutClicked) {
-            playButton.setBackground(lightDartGreen);
-        }
+    public void playButtonGreen() {playButton.setBackground(lightDartGreen);}
+    public void setCheckInTrue() { checkInClicked = true; 
+        if (checkOutClicked) { playButton.setBackground(lightDartGreen);}
     }
-    public void setCheckInTrue() { checkInClicked = true; }
-    public void setCheckOutTrue() { checkOutClicked = true; }
+    public void setCheckOutTrue() { checkOutClicked = true;
+        if(checkInClicked) { playButton.setBackground(lightDartGreen); }
+    }
 
     public void addLogText(String txt) {
-        logText.append(txt + '\n');
+        logText.setText(logText.getText() + '\n' + txt);
     }
 }
