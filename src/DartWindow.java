@@ -9,6 +9,7 @@ import javax.swing.JButton;
 
 //Formatting
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -125,7 +126,7 @@ public class DartWindow extends JFrame {
         DartLabel tLabel = new DartLabel("DartTrack", 80, dartBlack);
         DartLabel scoreLabel = new DartLabel("<html><center>Starting<br>Score</center></html>", 50, dartBlack);
         DartLabel playerCountLabel = new DartLabel("<html><center>Player<br>Count</center></html>", 50, dartBlack);
-        JPanel scorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        JPanel startScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
         JPanel playCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
         DartLabel spacingLabel[] = new DartLabel[4];
         JSpinner scoreSpinner = new JSpinner(new SpinnerNumberModel(501,101,901,100));
@@ -147,16 +148,16 @@ public class DartWindow extends JFrame {
         titleBarPanel.add(tLabel);
         titleBarPanel.setBackground(dartWhite);
         //Setting Score and Player Count Panel
-        scorePanel.setBackground(dartWhite);
+        startScorePanel.setBackground(dartWhite);
         playCountPanel.setBackground(dartWhite);
         //Adding panels
         for (int i = 0; i < 4; i++) {
             spacingLabel[i] = new DartLabel();
             spacingLabel[i].setPreferredSize(new Dimension(100,60));
         }
-        scorePanel.add(spacingLabel[0]);
-        scorePanel.add(new JPanel().add(scoreLabel));
-        scorePanel.add(spacingLabel[1]);
+        startScorePanel.add(spacingLabel[0]);
+        startScorePanel.add(new JPanel().add(scoreLabel));
+        startScorePanel.add(spacingLabel[1]);
         playCountPanel.add(spacingLabel[2]);
         playCountPanel.add(new JPanel().add(playerCountLabel));
         playCountPanel.add(spacingLabel[3]);
@@ -173,10 +174,10 @@ public class DartWindow extends JFrame {
         (((JSpinner.DefaultEditor) playCountSpinner.getEditor()).getTextField()).setFont(new Font("Calibri", Font.BOLD, 100));
         playCountSpinner.setBackground(darkDartWhite);
         //Adding to panels
-        scorePanel.add(scoreSpinner);
+        startScorePanel.add(scoreSpinner);
         playCountPanel.add(playCountSpinner);
         //Adding to middlePanel
-        middlePanel.add(scorePanel);
+        middlePanel.add(startScorePanel);
         middlePanel.add(playCountPanel);
         checkInLabel.setPreferredSize(new Dimension(300,60));
         checkOutLabel.setPreferredSize(new Dimension(300,60));
@@ -231,7 +232,7 @@ public class DartWindow extends JFrame {
         playerScorePanel = new JPanel();
         //Score Panel
         scorePanel.setPreferredSize(new Dimension(450,1080));
-        scorePanel.setBackground(dartWhite);
+        scorePanel.setBackground(dartBlack);
         scorePanel.setLayout(new FlowLayout());
         //Score Labels
         DartLabel titleLabel = new DartLabel("<html><center>Scores</center></html>",100,dartBlack);
@@ -268,9 +269,7 @@ public class DartWindow extends JFrame {
         logTitlePanel = new JPanel();
         logTitlePanel.setPreferredSize(new Dimension(500,40));
         logTitlePanel.setBackground(dartWhite);
-        logScrollPanel.setBackground(dartBlack);
-        logScrollPanel.setForeground(dartWhite);
-        //Log/Gamemode Title Bar
+        //Gamemode Title Bar
         modeLabel = new DartLabel("Game Log",30,dartBlack);
         if(dartTrack.getCheckin()==1 && dartTrack.getCheckout()==1) {
             modeLabel.setText("Open-in | Open-out");
@@ -282,23 +281,19 @@ public class DartWindow extends JFrame {
             modeLabel.setText("Double-in | Double-out");
         }
         //Log Text Area
-        logText = new JTextArea(20,20);
-        logText.setWrapStyleWord(true);
-        logText.setLineWrap(true);
-        //logText.setBackground(dartBlack);
-        //logText.setForeground(dartWhite);
-        logText.setText("Game commenced.");
-        logText.setFont(new Font("Calibri", Font.BOLD, 10));
-        logText.setPreferredSize(new Dimension(480,1080-playerPanelSize-40));
+        logText = new JTextArea("Game commenced.\n");
+        logText.setEditable(false);
+        logText.setForeground(dartWhite);
+        logText.setBackground(dartBlack);
+        //logText.setLineWrap(true);
+        //logText.setWrapStyleWord(true);
+        logText.setFont(logText.getFont().deriveFont(25f));
         //Log scrollpane
         logScroll = new JScrollPane(logText);
-        //logScroll.setBackground(dartBlack);
-        //logScroll.setForeground(dartWhite);
-        //Adding text area to scroll pane
-        logScroll.add(logText);
+        logScroll.setPreferredSize(new Dimension(450,1080-playerPanelSize-235));
         logTitlePanel.add(modeLabel);
         logScrollPanel.add(logScroll);
-        logScrollPanel.setPreferredSize(new Dimension(500,1080-playerPanelSize-40));
+        logScrollPanel.setPreferredSize(new Dimension(500,1080-playerPanelSize));
         //Adding to scorePanel
         scorePanel.add(logTitlePanel);
         scorePanel.add(logScrollPanel);
@@ -389,6 +384,7 @@ public class DartWindow extends JFrame {
     }
 
     public void addLogText(String txt) {
-        logText.setText(logText.getText() + '\n' + txt);
+        logText.append(txt + '\n');
+        logScroll.getVerticalScrollBar().setValue(logScroll.getVerticalScrollBar().getMaximum());
     }
 }
