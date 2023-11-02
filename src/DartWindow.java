@@ -291,8 +291,8 @@ public class DartWindow extends JFrame {
         //Adding player score panel
         scorePanel.add(playerScorePanel);
         //Creating scroll panels
-        logScrollPanel = new JPanel();
-        logTitlePanel = new JPanel();
+        logScrollPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100,0));
+        logTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100,0));
         logTitlePanel.setPreferredSize(new Dimension(500,40));
         logTitlePanel.setBackground(dartWhite);
         //Gamemode Title Bar
@@ -431,7 +431,7 @@ public class DartWindow extends JFrame {
 
     public void gameOverState() {
             dartWindow.showPlayerScores();
-            dartWindow.whiteOutMult();
+            dartWindow.grayOutNums();
             dartWindow.updatePlayScore("Player " + (dartTrack.getWinner()+1) + " wins!");
             dartWindow.addLogText("\nPlayer " + (dartTrack.getWinner()+1) + " wins!");
             dartWindow.changeNumsGameOver(12);
@@ -471,9 +471,12 @@ public class DartWindow extends JFrame {
         });
     }
 
-    private void whiteOutMult() {
+    private void grayOutNums() {
         for (int i = 0; i < 3; i++) {
-            multButtons[i].setBackground(dartWhite);
+            multButtons[i].setBackground(darkDartWhite);
+        }
+        for(int i = 0; i < 22; i++) {
+            numberButtons[i].setBackground(darkDartWhite);
         }
     }
     //Writing to file
@@ -507,6 +510,7 @@ public class DartWindow extends JFrame {
             }
             
         });
+        logTitlePanel.setBackground(dartBlack);
         logTitlePanel.add(fileWriteButton);
     }
 
