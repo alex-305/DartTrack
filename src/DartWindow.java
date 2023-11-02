@@ -174,10 +174,12 @@ public class DartWindow extends JFrame {
         playCountSpinner.setPreferredSize(new Dimension(220,220));
         //Score Spinner Formatting
         (((JSpinner.DefaultEditor) scoreSpinner.getEditor()).getTextField()).setFont(new Font("Calibri", Font.BOLD, 100));
-        scoreSpinner.setBackground(darkDartWhite);
+        (((JSpinner.DefaultEditor) scoreSpinner.getEditor()).getTextField()).setBackground(dartWhite);
+        scoreSpinner.setUI(new DartSpinnerButtonUI());
         //Player Count Spinner Formatting
         (((JSpinner.DefaultEditor) playCountSpinner.getEditor()).getTextField()).setFont(new Font("Calibri", Font.BOLD, 100));
-        playCountSpinner.setBackground(darkDartWhite);
+        (((JSpinner.DefaultEditor) playCountSpinner.getEditor()).getTextField()).setBackground(dartWhite);
+        playCountSpinner.setUI(new DartSpinnerButtonUI());
         //Adding to panels
         startScorePanel.add(scoreSpinner);
         playCountPanel.add(playCountSpinner);
@@ -288,7 +290,7 @@ public class DartWindow extends JFrame {
         logText.setFont(logText.getFont().deriveFont(25f));
         //Log scrollpane
         logScroll = new JScrollPane(logText);
-        logScroll.setPreferredSize(new Dimension(450,1080-playerPanelSize-235));
+        logScroll.setPreferredSize(new Dimension(450,1080-playerPanelSize-260));
         logTitlePanel.add(modeLabel);
         logScrollPanel.add(logScroll);
         //Adding to scorePanel

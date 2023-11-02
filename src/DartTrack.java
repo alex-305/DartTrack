@@ -70,6 +70,7 @@ public class DartTrack {
     public void setPlayerCount(int playerCount) { 
         this.playerCount = playerCount; 
         playerScores = new int [playerCount];
+        playerBust = new boolean[playerCount];
         for (int i = 0; i < playerCount; i++) {
             playerScores[i] = startScore;
             playerBust[i] = false;
