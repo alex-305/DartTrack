@@ -66,9 +66,12 @@ public class MultiplierButton extends JButton implements ActionListener {
         }
         if(dartTrack.getWinner() != -1 && !win) {
             dartWindow.showPlayerScores();
+            dartWindow.whiteOutMult();
             win = true;
             dartWindow.updatePlayScore("Player " + (dartTrack.getWinner()+1) + " wins!");
-            dartWindow.addLogText("\nPlayer " + (dartTrack.getWinner()+1) + " wins!");            
+            dartWindow.addLogText("\nPlayer " + (dartTrack.getWinner()+1) + " wins!");
+            dartWindow.changeNumsGameOver(12);
+            dartWindow.changeNumsGameOver(13);        
         }
     }
 

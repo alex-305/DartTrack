@@ -9,7 +9,6 @@ import javax.swing.JButton;
 
 //Formatting
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,6 +19,8 @@ import java.awt.FlowLayout;
 public class DartWindow extends JFrame {
     //Buttons clicked
     boolean numPicked, multPicked;
+    //Main Menu has occurred once
+    boolean mainOnce;
     //Colors
     final private Color dartWhite;
     final private Color dartBlack;
@@ -45,7 +46,8 @@ public class DartWindow extends JFrame {
     private MultiplierButton [] multButtons;
     //Panels
     private JPanel mainPanel;
-    private JPanel numPanel;
+    //Numbers Panel
+    private JPanel numPanel;    
     private JPanel scorePanel;
     private JPanel playerScorePanel;
     private JPanel titlePanel;
@@ -62,9 +64,9 @@ public class DartWindow extends JFrame {
 
     //Main Menu////////////////////
     //Panels
-    private JPanel checkinPanel;
+    private JPanel checkInPanel;
     private JPanel middlePanel;
-    private JPanel checkoutPanel;
+    private JPanel checkOutPanel;
     private JPanel playPanel;
     private JPanel titleBarPanel;
 
@@ -75,6 +77,20 @@ public class DartWindow extends JFrame {
     //Check-in Check-out Buttons
     CheckButton [] checkinButtons;
     CheckButton [] checkoutButtons;
+    DartLabel tLabel;
+    DartLabel scoreLabel;
+    DartLabel playerCountLabel;
+    JPanel startScorePanel;
+    JPanel playCountPanel;
+    DartLabel spacingLabel[];
+    JSpinner scoreSpinner;
+    JSpinner playCountSpinner;
+    DartLabel checkInLabel;
+    DartLabel checkOutLabel;
+    int checkinCount;
+    int checkoutCount;
+
+
     ///////////////////////////////
 
     //Singleton////////////////////////
@@ -96,7 +112,7 @@ public class DartWindow extends JFrame {
         numPicked = false;
         multPicked = false;
         dartTrack = DartTrack.getInstance();
-        mainPanel = new JPanel(new FlowLayout());
+        mainPanel = new JPanel(new BorderLayout());
         setContentPane(mainPanel);
         setSize(1920,1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -112,38 +128,35 @@ public class DartWindow extends JFrame {
         //////////////////////////////////////////////
 
         //Initialization for main menu
-        checkinPanel = new JPanel(new GridLayout(3,1));
-        checkoutPanel = new JPanel(new GridLayout(3,1));
+        checkInPanel = new JPanel(new GridLayout(3,1));
+        checkOutPanel = new JPanel(new GridLayout(3,1));
         middlePanel = new JPanel();
         playPanel = new JPanel();
         titleBarPanel = new JPanel();
         playButton = new JButton("Play");
+        mainOnce = false;
+        tLabel = new DartLabel("DartTrack", 80, dartBlack);
+        scoreLabel = new DartLabel("<html><center>Starting<br>Score</center></html>", 50, dartBlack);
+        playerCountLabel = new DartLabel("<html><center>Player<br>Count</center></html>", 50, dartBlack);
+        startScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        playCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        spacingLabel = new DartLabel[4];
+        scoreSpinner = new JSpinner(new SpinnerNumberModel(501,101,901,100));
+        playCountSpinner = new JSpinner(new SpinnerNumberModel(2,2,10,1));
+        checkInLabel = new DartLabel("<html><center>Check<br>In<center></html>", 50, dartBlack);
+        checkOutLabel = new DartLabel("<html><center>Check<br>Out<center></html>", 50, dartBlack);
+        checkinCount = 2;
+        checkoutCount = 2;
+        checkinButtons = new CheckButton[checkinCount];
+        checkoutButtons = new CheckButton[checkoutCount];
 
     }
     
     public void mainMenu() {
-        //Initializations for main menu
-        DartLabel tLabel = new DartLabel("DartTrack", 80, dartBlack);
-        DartLabel scoreLabel = new DartLabel("<html><center>Starting<br>Score</center></html>", 50, dartBlack);
-        DartLabel playerCountLabel = new DartLabel("<html><center>Player<br>Count</center></html>", 50, dartBlack);
-        JPanel startScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
-        JPanel playCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
-        DartLabel spacingLabel[] = new DartLabel[4];
-        JSpinner scoreSpinner = new JSpinner(new SpinnerNumberModel(501,101,901,100));
-        JSpinner playCountSpinner = new JSpinner(new SpinnerNumberModel(2,2,10,1));
-        DartLabel checkInLabel = new DartLabel("<html><center>Check<br>In<center></html>", 50, dartBlack);
-        DartLabel checkOutLabel = new DartLabel("<html><center>Check<br>Out<center></html>", 50, dartBlack);
-        int checkinCount = 2;
-        int checkoutCount = 2;
-        checkinButtons = new CheckButton[checkinCount];
-        checkoutButtons = new CheckButton[checkoutCount];
-
-        //Set layout for mainPanel
-        mainPanel.setLayout(new BorderLayout());
         //Setting background colors
         playPanel.setBackground(dartWhite);
-        checkoutPanel.setBackground(dartWhite);
-        checkinPanel.setBackground(dartWhite);
+        checkOutPanel.setBackground(dartWhite);
+        checkInPanel.setBackground(dartWhite);
         //Setting up title bar
         titleBarPanel.add(tLabel);
         titleBarPanel.setBackground(dartWhite);
@@ -181,22 +194,22 @@ public class DartWindow extends JFrame {
         middlePanel.add(playCountPanel);
         checkInLabel.setPreferredSize(new Dimension(300,60));
         checkOutLabel.setPreferredSize(new Dimension(300,60));
-        checkinPanel.add(checkInLabel);
-        checkinPanel.setPreferredSize(new Dimension(300,260));
-        checkoutPanel.add(checkOutLabel);
-        checkoutPanel.setPreferredSize(new Dimension(300,260));
+        checkInPanel.add(checkInLabel);
+        checkInPanel.setPreferredSize(new Dimension(300,260));
+        checkOutPanel.add(checkOutLabel);
+        checkOutPanel.setPreferredSize(new Dimension(300,260));
         //Adding all the button groups and panels
         for (int i = 0; i < checkinCount; i++) {
             checkinButtons[i] = new CheckButton(i+1, true);
             checkinButtons[i].setPreferredSize(new Dimension(100,100));
             checkinButtons[i].setBackground(darkDartWhite);
-            checkinPanel.add(checkinButtons[i]);
+            checkInPanel.add(checkinButtons[i]);
         }
         for (int i = 0; i < checkoutCount; i++) {
             checkoutButtons[i] = new CheckButton(i+1, false);
             checkoutButtons[i].setPreferredSize(new Dimension(100,100));
             checkoutButtons[i].setBackground(darkDartWhite);
-            checkoutPanel.add(checkoutButtons[i]);
+            checkOutPanel.add(checkoutButtons[i]);
         }
         //Setting up play button
         playButton.setFont(new Font("Calibri", Font.BOLD, 50));
@@ -206,6 +219,12 @@ public class DartWindow extends JFrame {
                 dartTrack.setMode(CheckButton.getCheckin(), CheckButton.getCheckout());
                 dartTrack.setStartScore((Integer)scoreSpinner.getValue());
                 dartTrack.setPlayerCount((Integer)playCountSpinner.getValue());
+                //Removing all
+                playPanel.removeAll();
+                checkOutPanel.removeAll();
+                checkInPanel.removeAll();
+                middlePanel.removeAll();
+                titleBarPanel.removeAll();
                 getContentPane().removeAll();
                 start();
             }
@@ -215,9 +234,9 @@ public class DartWindow extends JFrame {
         playPanel.setPreferredSize(new Dimension(1920,100));
         //Adding all panels to main panel
         mainPanel.add(titleBarPanel, BorderLayout.NORTH);
-        mainPanel.add(checkinPanel, BorderLayout.WEST);
+        mainPanel.add(checkInPanel, BorderLayout.WEST);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
-        mainPanel.add(checkoutPanel, BorderLayout.EAST);
+        mainPanel.add(checkOutPanel, BorderLayout.EAST);
         mainPanel.add(playPanel, BorderLayout.SOUTH);
         setVisible(true);
     }
@@ -387,4 +406,42 @@ public class DartWindow extends JFrame {
         logText.append(txt + '\n');
         logScroll.getVerticalScrollBar().setValue(logScroll.getVerticalScrollBar().getMaximum());
     }
+
+    public void changeNumsGameOver(int number) {
+        numberButtons[number].setOpaque(true);
+        numberButtons[number].setFont(new Font("Calibri",Font.BOLD,70));
+        numberButtons[number].setBackground(dartGold);
+        if(number == 12) {
+            numberButtons[number].setText("<html><center>Play<br>Again</center><html>");
+        } else {
+            numberButtons[number].setText("<html><center>Main<br>Menu</center><html>");
+        }
+        numberButtons[number].addActionListener(e -> {
+            if(dartTrack.getWinner() != -1) {
+                dartTrack.softResetGame();
+                logText.setText("");
+                //Reset number 12
+                numberButtons[12].setBackground(dartWhite);
+                numberButtons[12].setText("12");
+                numberButtons[12].setFont(new Font("Calibri", Font.BOLD, 100));
+                //Reset number 13
+                numberButtons[13].setText("13");
+                numberButtons[13].setBackground(dartWhite);
+                numberButtons[13].setFont(new Font("Calibri", Font.BOLD, 100));
+                if(number == 13) {
+                    getContentPane().removeAll();
+                    mainMenu();
+                }
+                revalidate();
+                repaint();
+            }
+        });
+    }
+
+    public void whiteOutMult() {
+        for (int i = 0; i < 3; i++) {
+            multButtons[i].setBackground(dartWhite);
+        }
+    }
+
 }

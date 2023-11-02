@@ -155,4 +155,16 @@ public class DartTrack {
         dartCount = 0;  
         winner = -1;
     }
+    //Reset game with same player count and start score
+    //ie: Play again
+    public void softResetGame() {
+        for (int i = 0; i < playerCount; i++) {
+            playerScores[i] = startScore;
+        }
+        winner = -1;
+        dartCount = 0;
+        turn = 0;
+        valueToMult = -1;
+        badScore = false;
+    }
 }
