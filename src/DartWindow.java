@@ -28,8 +28,6 @@ public class DartWindow extends JFrame {
     //Colors
     final private Color dartWhite;
     final private Color dartBlack;
-    final private Color dartRed;
-    final private Color dartGreen;
     final private Color dartGold;
     final private Color darkDartWhite;
     final private Color lightDartRed;
@@ -37,8 +35,6 @@ public class DartWindow extends JFrame {
     //Color Getters
     public Color getWhite() { return dartWhite; }
     public Color getBlack() { return dartBlack; }
-    public Color getRed() { return dartRed; }
-    public Color getGreen() { return dartGreen; }
     public Color getGold() { return dartGold; }
     public Color getDarkWhite() { return darkDartWhite; }
     public Color getLightRed() { return lightDartRed; }
@@ -116,8 +112,6 @@ public class DartWindow extends JFrame {
     //Colors/////////////////////////////////////
         dartWhite = new Color(200, 214, 229);
         dartBlack = new Color(34, 47, 62);
-        dartRed = new Color(255, 56, 56);
-        dartGreen = new Color(68, 189, 50);
         dartGold = new Color(254, 202, 87);
         darkDartWhite = new Color(136, 166, 199);
         lightDartGreen = new Color(177, 232, 169);
