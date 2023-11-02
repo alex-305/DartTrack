@@ -16,6 +16,7 @@ public class DartTrack {
     private boolean numPicked;
     private int turn;  
     private int valueToMult;
+    private int multValue;
     private int startScore;
     private boolean playerBust[];
 
@@ -24,6 +25,7 @@ public class DartTrack {
     private int checkoutMode;
 
     //Getters
+    public int getMultValue() { return multValue; }
     public int getValueToMult() { return valueToMult; }
     public int getStartScore() { return startScore; }
     public int getTurn() { return turn; }
@@ -135,6 +137,7 @@ public class DartTrack {
     }
 
     public void addPoints(int points, int mult) {
+        multValue = mult;
             switch(checkinMode) {
                 case 1:
                     switch(checkoutMode) {
@@ -178,5 +181,6 @@ public class DartTrack {
         dartCount = 0;
         turn = 0;
         valueToMult = -1;
+        multValue = -1;
     }
 }

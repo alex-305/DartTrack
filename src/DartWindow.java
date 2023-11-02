@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 public class DartWindow extends JFrame {
     //Buttons clicked
@@ -46,6 +45,8 @@ public class DartWindow extends JFrame {
     public Color getLightGreen() { return lightDartGreen; }
     //DartTrack
     public static DartTrack dartTrack;
+    //RandomMessage
+    public static RandomMessage randomMessage;
     //Buttons
     private NumberButton [] numberButtons;
     private MultiplierButton [] multButtons;
@@ -132,6 +133,7 @@ public class DartWindow extends JFrame {
         setSize(1920,1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        randomMessage = RandomMessage.getInstance();
 
         //Initialization for main menu
         checkInPanel = new DartPanel(new GridLayout(3,1), 300,260, dartWhite);
@@ -159,7 +161,6 @@ public class DartWindow extends JFrame {
     }
     
     public void mainMenu() {
-        //Setting background colors
         //Setting up title bar
         titleBarPanel.add(tLabel);
         //Setting Score and Player Count Panel
@@ -388,16 +389,16 @@ public class DartWindow extends JFrame {
     }
 
     public void updateLog(int multValue) {
-        Random messageRandomizer = new Random();
-        int randomInt = (messageRandomizer.nextInt(5) + 1 );//Random int from 1-5
+
         if (dartTrack.getBust() == dartTrack.getPreviousTurn()) {//if bust then next turn
-            dartWindow.addLogText("\nPlayer " + (dartTrack.getPreviousTurn()+1) + " a bust\n" + randomNextTurn(randomInt) + '\n');
+            dartWindow.addLogText("\nPlayer " + (dartTrack.getPreviousTurn()+1) + " a bust\n" + randomMessage.generateNextTurn() + '\n');
         } else if (dartTrack.getDartCount() == 0 && dartTrack.getWinner() == -1) { //if not bust and dartcount = 0 then next turn
-            dartWindow.addLogText(randomMessage(randomInt, multValue));
-            dartWindow.addLogText('\n' + randomNextTurn(randomInt) + '\n');
+            dartWindow.addLogText(randomMessage.generateMessage());
+            dartWindow.addLogText('\n' + randomMessage.generateNextTurn() + '\n');
         } else { //normal dart
-            dartWindow.addLogText(randomMessage(randomInt, multValue));
+            dartWindow.addLogText(randomMessage.generateMessage());
         }
+
         dartWindow.showPlayerScores();
         dartWindow.updateActivePlayer();
         dartWindow.resetNumColors();
@@ -491,110 +492,4 @@ public class DartWindow extends JFrame {
         logTitlePanel.removeAll();
         logTitlePanel.add(modeLabel);
     }
-
-    private String randomMessage(int randomInt, int multValue) {
-        String msg = "\0";
-        switch(multValue) {
-            case 1:
-                msg = random1x(randomInt);
-                break;
-            case 2:
-                msg = random2x(randomInt);
-                break;
-            case 3:
-                msg = random3x(randomInt);
-                break;
-        }
-        return msg;
-    }
-    private String random3x(int randomInt) {
-        String msg = "\0";
-        switch(randomInt) {
-            case 1:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit a whopping 3x " + dartTrack.getValueToMult());
-                break;
-            case 2:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit the 3x " + dartTrack.getValueToMult() + '!');
-                break;
-            case 3:
-                msg = "Woah! Player " + (dartTrack.getPreviousTurn()+1) + " got a " + dartTrack.getValueToMult() + "x of " + dartTrack.getValueToMult();
-                break;
-            case 4:
-                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " shot a 3x " + dartTrack.getValueToMult() + '!';
-                break;
-            case 5:
-                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " hit a 3x " + dartTrack.getValueToMult() + '!';
-                break;
-        }
-        return msg;
-    }
-    
-    private String random2x(int randomInt) {
-        String msg = "\0";
-        switch(randomInt) {
-            case 1:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " got " + dartTrack.getValueToMult() + " with 2x multiplier");
-                break;
-            case 2:
-                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " got a 2x " + dartTrack.getValueToMult();
-                break;
-            case 3:
-                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " hit the 2x " + dartTrack.getValueToMult();
-                break;
-            case 4:
-                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " hit " + dartTrack.getValueToMult() + " with 2x multiplier";
-                break;
-            case 5:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " shot the 2x " + dartTrack.getValueToMult());
-                break;
-        }
-        return msg;
-
-    }
-
-    private String random1x(int randomInt) {
-        String msg = "\0";
-        switch(randomInt) {
-            case 1:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit the " + dartTrack.getValueToMult());
-                break;
-            case 2:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit " + dartTrack.getValueToMult());
-                break;
-            case 3:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " shot the " + dartTrack.getValueToMult());
-                break;
-            case 4:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " got a " + dartTrack.getValueToMult());
-                break;
-            case 5:
-                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " scored " + dartTrack.getValueToMult() + " points");
-                break;
-        }
-        return msg;
-    }
-
-    private String randomNextTurn(int randomInt) {
-        String msg = "\0";
-        switch(randomInt) {
-            case 1:
-                msg = "Player " + (dartTrack.getTurn()+1) + "'s turn!";
-                break;
-            case 2:
-                msg = "Now it's Player " + (dartTrack.getTurn()+1) + "'s time to shine!";
-                break;
-            case 3:
-                msg = "Player " + (dartTrack.getTurn()+1) + ", you're up!";
-                break;
-            case 4:
-                msg = "It's your move Player " + (dartTrack.getTurn()+1) + '!';
-                break;
-            case 5:
-                msg = "It's Player " + (dartTrack.getTurn()+1) + "'s turn now!";
-                break;
-        }
-        return msg;
-    }
-
-
 }
