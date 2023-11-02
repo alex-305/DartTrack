@@ -15,6 +15,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+//Writing to file
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
 
 public class DartWindow extends JFrame {
     //Buttons clicked
@@ -300,12 +307,12 @@ public class DartWindow extends JFrame {
             modeLabel.setText("Double-in | Double-out");
         }
         //Log Text Area
-        logText = new JTextArea("Game commenced.\n");
+        logText = new JTextArea(modeLabel.getText() + "\nGame has commenced.\n\n");
         logText.setEditable(false);
         logText.setForeground(dartWhite);
         logText.setBackground(dartBlack);
-        //logText.setLineWrap(true);
-        //logText.setWrapStyleWord(true);
+        logText.setLineWrap(true);
+        logText.setWrapStyleWord(true);
         logText.setFont(logText.getFont().deriveFont(25f));
         //Log scrollpane
         logScroll = new JScrollPane(logText);
@@ -346,7 +353,9 @@ public class DartWindow extends JFrame {
     }
 
     //Update score
-    public void updatePlayScore(String txt) {playerScoreLabels[dartTrack.getTurn()].setText(txt); }
+    public void updatePlayScore(String txt) {
+        playerScoreLabels[dartTrack.getTurn()].setText(txt);
+    }
 
     //Show all scores
     public void showPlayerScores() {
@@ -355,13 +364,10 @@ public class DartWindow extends JFrame {
         }
     }
 
+
     //Active player indicator
     public void updateActivePlayer() {
-        if (dartTrack.getBadScore()) {
-            playerPanels[dartTrack.getTurn()].setBackground(lightDartRed);
-        } else {
-            playerPanels[dartTrack.getTurn()].setBackground(lightDartGreen);
-        }
+        playerPanels[dartTrack.getTurn()].setBackground(lightDartGreen);
         for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
             if (i != dartTrack.getTurn()) {
                 playerPanels[i].setBackground(darkDartWhite);
@@ -407,7 +413,33 @@ public class DartWindow extends JFrame {
         logScroll.getVerticalScrollBar().setValue(logScroll.getVerticalScrollBar().getMaximum());
     }
 
-    public void changeNumsGameOver(int number) {
+    public void updateLog(int multValue) {
+        Random messageRandomizer = new Random();
+        int randomInt = (messageRandomizer.nextInt(5) + 1 );//Random int from 1-5
+        if (dartTrack.getBust() == dartTrack.getPreviousTurn()) {//if bust then next turn
+            dartWindow.addLogText("\nPlayer " + (dartTrack.getPreviousTurn()+1) + " a bust\n" + randomNextTurn(randomInt) + '\n');
+        } else if (dartTrack.getDartCount() == 0 && dartTrack.getWinner() == -1) { //if not bust and dartcount = 0 then next turn
+            dartWindow.addLogText(randomMessage(randomInt, multValue));
+            dartWindow.addLogText('\n' + randomNextTurn(randomInt) + '\n');
+        } else { //normal dart
+            dartWindow.addLogText(randomMessage(randomInt, multValue));
+        }
+        dartWindow.showPlayerScores();
+        dartWindow.updateActivePlayer();
+        dartWindow.resetNumColors();
+    }
+
+    public void gameOverState() {
+            dartWindow.showPlayerScores();
+            dartWindow.whiteOutMult();
+            dartWindow.updatePlayScore("Player " + (dartTrack.getWinner()+1) + " wins!");
+            dartWindow.addLogText("\nPlayer " + (dartTrack.getWinner()+1) + " wins!");
+            dartWindow.changeNumsGameOver(12);
+            dartWindow.changeNumsGameOver(13);
+            dartWindow.fileWriteAddButton();
+    }
+
+    private void changeNumsGameOver(int number) {
         numberButtons[number].setOpaque(true);
         numberButtons[number].setFont(new Font("Calibri",Font.BOLD,70));
         numberButtons[number].setBackground(dartGold);
@@ -428,6 +460,7 @@ public class DartWindow extends JFrame {
                 numberButtons[13].setText("13");
                 numberButtons[13].setBackground(dartWhite);
                 numberButtons[13].setFont(new Font("Calibri", Font.BOLD, 100));
+                revertLogTitlePanel();
                 if(number == 13) {
                     getContentPane().removeAll();
                     mainMenu();
@@ -438,10 +471,153 @@ public class DartWindow extends JFrame {
         });
     }
 
-    public void whiteOutMult() {
+    private void whiteOutMult() {
         for (int i = 0; i < 3; i++) {
             multButtons[i].setBackground(dartWhite);
         }
     }
+    //Writing to file
+    private boolean writeLogToFile() {
+        String fileName="dart_log_";
+        boolean writeSuccessful = false;
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH_mm_ss");
+        fileName += time.format(formatter);
+        fileName += ".txt";
+
+        try(FileWriter fileWriter = new FileWriter(fileName);) {
+            fileWriter.write(logText.getText());
+            writeSuccessful = true;
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return writeSuccessful;
+    }
+
+    private void fileWriteAddButton() {
+        logTitlePanel.removeAll();
+        JButton fileWriteButton = new JButton("Save game logs");
+        fileWriteButton.setPreferredSize(new Dimension(380,35));
+        fileWriteButton.setFont(new Font("Calibri", Font.BOLD, 30));
+        fileWriteButton.setForeground(dartBlack);
+        fileWriteButton.setBackground(dartGold);
+        fileWriteButton.addActionListener(e->{
+            if(writeLogToFile()) {
+                addLogText("\nWrite to file was successful.");
+            }
+            
+        });
+        logTitlePanel.add(fileWriteButton);
+    }
+
+    private void revertLogTitlePanel() {
+        logTitlePanel.removeAll();
+        logTitlePanel.add(modeLabel);
+    }
+
+    private String randomMessage(int randomInt, int multValue) {
+        String msg = "\0";
+        switch(multValue) {
+            case 1:
+                msg = random1x(randomInt);
+                break;
+            case 2:
+                msg = random2x(randomInt);
+                break;
+            case 3:
+                msg = random3x(randomInt);
+                break;
+        }
+        return msg;
+    }
+    private String random3x(int randomInt) {
+        String msg = "\0";
+        switch(randomInt) {
+            case 1:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit a whopping 3x " + dartTrack.getValueToMult());
+                break;
+            case 2:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit the 3x " + dartTrack.getValueToMult() + '!');
+                break;
+            case 3:
+                msg = "Woah! Player " + (dartTrack.getPreviousTurn()+1) + " got a " + dartTrack.getValueToMult() + "x of " + dartTrack.getValueToMult();
+                break;
+            case 4:
+                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " shot a 3x " + dartTrack.getValueToMult() + '!';
+                break;
+            case 5:
+                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " hit a 3x " + dartTrack.getValueToMult() + '!';
+                break;
+        }
+        return msg;
+    }
+    
+    private String random2x(int randomInt) {
+        String msg = "\0";
+        switch(randomInt) {
+            case 1:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " got " + dartTrack.getValueToMult() + " with 2x multiplier");
+                break;
+            case 2:
+                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " got a 2x " + dartTrack.getValueToMult();
+                break;
+            case 3:
+                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " hit the 2x " + dartTrack.getValueToMult();
+                break;
+            case 4:
+                msg = "Player " + (dartTrack.getPreviousTurn()+1) + " hit " + dartTrack.getValueToMult() + " with 2x multiplier";
+                break;
+            case 5:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " shot the 2x " + dartTrack.getValueToMult());
+                break;
+        }
+        return msg;
+
+    }
+
+    private String random1x(int randomInt) {
+        String msg = "\0";
+        switch(randomInt) {
+            case 1:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit the " + dartTrack.getValueToMult());
+                break;
+            case 2:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit " + dartTrack.getValueToMult());
+                break;
+            case 3:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " shot the " + dartTrack.getValueToMult());
+                break;
+            case 4:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " got a " + dartTrack.getValueToMult());
+                break;
+            case 5:
+                msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " scored " + dartTrack.getValueToMult() + " points");
+                break;
+        }
+        return msg;
+    }
+
+    private String randomNextTurn(int randomInt) {
+        String msg = "\0";
+        switch(randomInt) {
+            case 1:
+                msg = "Player " + (dartTrack.getTurn()+1) + "'s turn!";
+                break;
+            case 2:
+                msg = "Now it's Player " + (dartTrack.getTurn()+1) + "'s turn to shine!";
+                break;
+            case 3:
+                msg = "Player " + (dartTrack.getTurn()+1) + ", you're up!";
+                break;
+            case 4:
+                msg = "It's your move Player " + (dartTrack.getTurn()+1) + '!';
+                break;
+            case 5:
+                msg = "It's Player " + (dartTrack.getTurn()+1) + "'s turn now!";
+                break;
+        }
+        return msg;
+    }
+
 
 }
