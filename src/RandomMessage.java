@@ -16,7 +16,7 @@ public String generateMessage() {
             msg = random3x(randomInt);
             break;
     }
-    return msg;
+    return (msg + " (" + (dartTrack.getMultValue() * dartTrack.getValueToMult()) + ')');
 }
 
 public String generateNextTurn() {
@@ -72,7 +72,7 @@ private String random3x(int randomInt) {
             msg = ("Player " + (dartTrack.getPreviousTurn()+1) + " hit the 3x " + dartTrack.getValueToMult() + '!');
             break;
         case 3:
-            msg = "Woah! Player " + (dartTrack.getPreviousTurn()+1) + " got a " + dartTrack.getValueToMult() + "x of " + dartTrack.getValueToMult();
+            msg = "Woah! Player " + (dartTrack.getPreviousTurn()+1) + " got a 3x of " + dartTrack.getValueToMult();
             break;
         case 4:
             msg = "Player " + (dartTrack.getPreviousTurn()+1) + " shot a 3x " + dartTrack.getValueToMult() + '!';
