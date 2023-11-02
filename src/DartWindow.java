@@ -109,6 +109,8 @@ public class DartWindow extends JFrame {
 
     //Private constructor
     private DartWindow() {
+    //Set title
+    setTitle("DartTrack");
     //Colors/////////////////////////////////////
         dartWhite = new Color(200, 214, 229);
         dartBlack = new Color(34, 47, 62);
