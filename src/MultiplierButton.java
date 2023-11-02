@@ -38,7 +38,7 @@ public class MultiplierButton extends JButton implements ActionListener {
                 dartTrack.setValueToMult(-1);
             }
 
-            if(dartTrack.getValueToMult() != 25) {
+            if(dartTrack.getValueToMult() != 25 && dartTrack.getWinner() != 1) {
                 dartWindow.enable3x();
             }
         }

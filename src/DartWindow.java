@@ -1,6 +1,5 @@
 //Java Swing
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
-
 
 public class DartWindow extends JFrame {
     //Buttons clicked
@@ -52,30 +50,30 @@ public class DartWindow extends JFrame {
     private NumberButton [] numberButtons;
     private MultiplierButton [] multButtons;
     //Panels
-    private JPanel mainPanel;
+    private DartPanel mainPanel;
     //Numbers Panel
-    private JPanel numPanel;    
-    private JPanel scorePanel;
-    private JPanel playerScorePanel;
-    private JPanel titlePanel;
+    private DartPanel numPanel;    
+    private DartPanel scorePanel;
+    private DartPanel playerScorePanel;
+    private DartPanel titlePanel;
     //Player Score Panels
-    private JPanel [] playerPanels;
+    private DartPanel [] playerPanels;
     //Player Score Labels
     private DartLabel [] playerScoreLabels;
     //Scrollable Log
-    private JPanel logTitlePanel;
-    private JPanel logScrollPanel;
+    private DartPanel logTitlePanel;
+    private DartPanel logScrollPanel;
     private DartLabel modeLabel;
     private JScrollPane logScroll;
     private JTextArea logText;
 
     //Main Menu////////////////////
     //Panels
-    private JPanel checkInPanel;
-    private JPanel middlePanel;
-    private JPanel checkOutPanel;
-    private JPanel playPanel;
-    private JPanel titleBarPanel;
+    private DartPanel checkInPanel;
+    private DartPanel middlePanel;
+    private DartPanel checkOutPanel;
+    private DartPanel playPanel;
+    private DartPanel titleBarPanel;
 
     //Play Button
     private JButton playButton;
@@ -87,8 +85,8 @@ public class DartWindow extends JFrame {
     DartLabel tLabel;
     DartLabel scoreLabel;
     DartLabel playerCountLabel;
-    JPanel startScorePanel;
-    JPanel playCountPanel;
+    DartPanel startScorePanel;
+    DartPanel playCountPanel;
     DartLabel spacingLabel[];
     JSpinner scoreSpinner;
     JSpinner playCountSpinner;
@@ -114,16 +112,7 @@ public class DartWindow extends JFrame {
 
     //Private constructor
     private DartWindow() {
-        checkInClicked = false;
-        checkOutClicked = false;
-        numPicked = false;
-        multPicked = false;
-        dartTrack = DartTrack.getInstance();
-        mainPanel = new JPanel(new BorderLayout());
-        setContentPane(mainPanel);
-        setSize(1920,1080);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //Colors/////////////////////////////////////
+    //Colors/////////////////////////////////////
         dartWhite = new Color(200, 214, 229);
         dartBlack = new Color(34, 47, 62);
         dartRed = new Color(255, 56, 56);
@@ -132,21 +121,31 @@ public class DartWindow extends JFrame {
         darkDartWhite = new Color(136, 166, 199);
         lightDartGreen = new Color(177, 232, 169);
         lightDartRed = new Color(255, 175, 175);
-        //////////////////////////////////////////////
+    //////////////////////////////////////////////
+        checkInClicked = false;
+        checkOutClicked = false;
+        numPicked = false;
+        multPicked = false;
+        dartTrack = DartTrack.getInstance();
+        mainPanel = new DartPanel(new BorderLayout(), 1920, 1080, dartWhite);
+        setContentPane(mainPanel);
+        setSize(1920,1080);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 
         //Initialization for main menu
-        checkInPanel = new JPanel(new GridLayout(3,1));
-        checkOutPanel = new JPanel(new GridLayout(3,1));
-        middlePanel = new JPanel();
-        playPanel = new JPanel();
-        titleBarPanel = new JPanel();
+        checkInPanel = new DartPanel(new GridLayout(3,1), 300,260, dartWhite);
+        checkOutPanel = new DartPanel(new GridLayout(3,1), 300, 260, dartWhite);
+        middlePanel = new DartPanel(new GridLayout(1,2), 1720, 980, dartWhite);
+        playPanel = new DartPanel(null,1920,100,dartWhite);
+        titleBarPanel = new DartPanel(null,1920,150,dartWhite);
         playButton = new JButton("Play");
         mainOnce = false;
         tLabel = new DartLabel("DartTrack", 80, dartBlack);
         scoreLabel = new DartLabel("<html><center>Starting<br>Score</center></html>", 50, dartBlack);
         playerCountLabel = new DartLabel("<html><center>Player<br>Count</center></html>", 50, dartBlack);
-        startScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
-        playCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        startScorePanel = new DartPanel(new FlowLayout(FlowLayout.CENTER, 200, 5),dartWhite);
+        playCountPanel = new DartPanel(new FlowLayout(FlowLayout.CENTER, 200, 5), dartWhite);
         spacingLabel = new DartLabel[4];
         scoreSpinner = new JSpinner(new SpinnerNumberModel(501,101,901,100));
         playCountSpinner = new JSpinner(new SpinnerNumberModel(2,2,10,1));
@@ -161,29 +160,20 @@ public class DartWindow extends JFrame {
     
     public void mainMenu() {
         //Setting background colors
-        playPanel.setBackground(dartWhite);
-        checkOutPanel.setBackground(dartWhite);
-        checkInPanel.setBackground(dartWhite);
         //Setting up title bar
         titleBarPanel.add(tLabel);
-        titleBarPanel.setBackground(dartWhite);
         //Setting Score and Player Count Panel
-        startScorePanel.setBackground(dartWhite);
-        playCountPanel.setBackground(dartWhite);
         //Adding panels
         for (int i = 0; i < 4; i++) {
             spacingLabel[i] = new DartLabel();
             spacingLabel[i].setPreferredSize(new Dimension(100,60));
         }
         startScorePanel.add(spacingLabel[0]);
-        startScorePanel.add(new JPanel().add(scoreLabel));
+        startScorePanel.add(new DartPanel().add(scoreLabel));
         startScorePanel.add(spacingLabel[1]);
         playCountPanel.add(spacingLabel[2]);
-        playCountPanel.add(new JPanel().add(playerCountLabel));
+        playCountPanel.add(new DartPanel().add(playerCountLabel));
         playCountPanel.add(spacingLabel[3]);
-        //Setting up middle Panel
-        middlePanel.setPreferredSize(new Dimension(1720,980));
-        middlePanel.setLayout(new GridLayout(1,2));
         //Resizing and reformatting
         scoreSpinner.setPreferredSize(new Dimension(220,220));
         playCountSpinner.setPreferredSize(new Dimension(220,220));
@@ -202,9 +192,7 @@ public class DartWindow extends JFrame {
         checkInLabel.setPreferredSize(new Dimension(300,60));
         checkOutLabel.setPreferredSize(new Dimension(300,60));
         checkInPanel.add(checkInLabel);
-        checkInPanel.setPreferredSize(new Dimension(300,260));
         checkOutPanel.add(checkOutLabel);
-        checkOutPanel.setPreferredSize(new Dimension(300,260));
         //Adding all the button groups and panels
         for (int i = 0; i < checkinCount; i++) {
             checkinButtons[i] = new CheckButton(i+1, true);
@@ -238,7 +226,6 @@ public class DartWindow extends JFrame {
         });
         //Adding to play Panel
         playPanel.add(playButton);
-        playPanel.setPreferredSize(new Dimension(1920,100));
         //Adding all panels to main panel
         mainPanel.add(titleBarPanel, BorderLayout.NORTH);
         mainPanel.add(checkInPanel, BorderLayout.WEST);
@@ -253,24 +240,16 @@ public class DartWindow extends JFrame {
         revalidate();
         repaint();
         //Score Panels
-        scorePanel = new JPanel();
-        titlePanel = new JPanel();
-        playerScorePanel = new JPanel();
-        //Score Panel
-        scorePanel.setPreferredSize(new Dimension(450,1080));
-        scorePanel.setBackground(dartBlack);
-        scorePanel.setLayout(new FlowLayout());
+        scorePanel = new DartPanel(new FlowLayout(), 450, 1080,dartBlack);
+        titlePanel = new DartPanel(null, 500, 100, dartWhite);
         //Score Labels
         DartLabel titleLabel = new DartLabel("<html><center>Scores</center></html>",100,dartBlack);
         //Adding labels to panels
-        titlePanel.setPreferredSize(new Dimension(500,100));
         titlePanel.add(titleLabel);
-        titlePanel.setBackground(dartWhite);
         scorePanel.add(titlePanel);
         //Player score panels
-        playerScorePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100,5));
         //Player Panels
-        playerPanels = new JPanel[dartTrack.getPlayerCount()];
+        playerPanels = new DartPanel[dartTrack.getPlayerCount()];
         //Player score setup
         playerScoreLabels = new DartLabel[dartTrack.getPlayerCount()];
         int playerPanelSize = 5;//Used to make playerScorePanel resizable according to # of players
@@ -279,22 +258,20 @@ public class DartWindow extends JFrame {
             //Labels
             playerScoreLabels[i] = new DartLabel("Player " + (i+1) + ": " + dartTrack.getPlayerScore(i),50, dartBlack);
             //Panels
-            playerPanels[i] = new JPanel();
+            playerPanels[i] = new DartPanel(null,500,70,dartWhite);
             playerPanels[i].add(playerScoreLabels[i]);
-            playerPanels[i].setPreferredSize(new Dimension(500,70));
-            playerPanels[i].setBackground(dartWhite);
+        }
+        //Creating the container for player scores
+        playerScorePanel = new DartPanel(new FlowLayout(FlowLayout.CENTER, 100,5),500, playerPanelSize, dartBlack);
+        //Adding each element
+        for (int i = 0; i < dartTrack.getPlayerCount(); i++) {
             playerScorePanel.add(playerPanels[i]);
         }
-        playerScorePanel.setPreferredSize(new Dimension(500,playerPanelSize));
-        playerScorePanel.setBackground(dartBlack);
-
         //Adding player score panel
         scorePanel.add(playerScorePanel);
         //Creating scroll panels
-        logScrollPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100,0));
-        logTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100,0));
-        logTitlePanel.setPreferredSize(new Dimension(500,40));
-        logTitlePanel.setBackground(dartWhite);
+        logScrollPanel = new DartPanel(new FlowLayout(FlowLayout.CENTER, 100,0),500,1080-playerPanelSize);
+        logTitlePanel = new DartPanel(new FlowLayout(FlowLayout.CENTER, 100,0), 500, 40);
         //Gamemode Title Bar
         modeLabel = new DartLabel("Game Log",30,dartBlack);
         if(dartTrack.getCheckin()==1 && dartTrack.getCheckout()==1) {
@@ -319,15 +296,13 @@ public class DartWindow extends JFrame {
         logScroll.setPreferredSize(new Dimension(450,1080-playerPanelSize-235));
         logTitlePanel.add(modeLabel);
         logScrollPanel.add(logScroll);
-        logScrollPanel.setPreferredSize(new Dimension(500,1080-playerPanelSize));
         //Adding to scorePanel
         scorePanel.add(logTitlePanel);
         scorePanel.add(logScrollPanel);
         //Number Buttons
         numberButtons = new NumberButton[22];
         //Initialzing and setting layout for numPanel
-        numPanel = new JPanel(new GridLayout(5,5));
-        numPanel.setSize(1000,1000);
+        numPanel = new DartPanel(new GridLayout(5,5), 1000,1000);
         for (int i = 0; i < 21; i++) {
             //Making all buttons equal a number and adding them to panel
             numberButtons[i] = new NumberButton(i);
@@ -347,7 +322,6 @@ public class DartWindow extends JFrame {
         //Adding panels to main panel
         mainPanel.add(numPanel);
         mainPanel.add(scorePanel, BorderLayout.EAST);
-        mainPanel.setBackground(dartBlack);
 
         setVisible(true);
     }
@@ -510,7 +484,6 @@ public class DartWindow extends JFrame {
             }
             
         });
-        logTitlePanel.setBackground(dartBlack);
         logTitlePanel.add(fileWriteButton);
     }
 
@@ -608,7 +581,7 @@ public class DartWindow extends JFrame {
                 msg = "Player " + (dartTrack.getTurn()+1) + "'s turn!";
                 break;
             case 2:
-                msg = "Now it's Player " + (dartTrack.getTurn()+1) + "'s turn to shine!";
+                msg = "Now it's Player " + (dartTrack.getTurn()+1) + "'s time to shine!";
                 break;
             case 3:
                 msg = "Player " + (dartTrack.getTurn()+1) + ", you're up!";
